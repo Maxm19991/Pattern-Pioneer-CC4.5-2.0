@@ -1,0 +1,1019 @@
+[
+  {
+    "id": "pattern-1",
+    "name": "Aboriginal",
+    "slug": "aboriginal",
+    "description": "Beautiful seamless aboriginal pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Aboriginal.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-2",
+    "name": "Abstract Mirage",
+    "slug": "abstract-mirage",
+    "description": "Beautiful seamless abstract mirage pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Abstract Mirage.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-3",
+    "name": "Abstract",
+    "slug": "abstract",
+    "description": "Beautiful seamless abstract pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Abstract.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-4",
+    "name": "Alpine A-frame",
+    "slug": "alpine-a-frame",
+    "description": "Beautiful seamless alpine a-frame pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Alpine A-frame.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-5",
+    "name": "Ang Pao",
+    "slug": "ang-pao",
+    "description": "Beautiful seamless ang pao pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Ang Pao.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-6",
+    "name": "Appalachian Autumn",
+    "slug": "appalachian-autumn",
+    "description": "Beautiful seamless appalachian autumn pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Appalachian Autumn.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-7",
+    "name": "Arcadian Chronicles",
+    "slug": "arcadian-chronicles",
+    "description": "Beautiful seamless arcadian chronicles pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Arcadian Chronicles.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-8",
+    "name": "Autumn forest",
+    "slug": "autumn-forest",
+    "description": "Beautiful seamless autumn forest pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Autumn forest.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-9",
+    "name": "Balinese Batik",
+    "slug": "balinese-batik",
+    "description": "Beautiful seamless balinese batik pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Balinese Batik.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-10",
+    "name": "Broken Harmony",
+    "slug": "broken-harmony",
+    "description": "Beautiful seamless broken harmony pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Broken Harmony.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-11",
+    "name": "Bubblegum Bubbles",
+    "slug": "bubblegum-bubbles",
+    "description": "Beautiful seamless bubblegum bubbles pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Bubblegum Bubbles.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-12",
+    "name": "Bunny Burrow",
+    "slug": "bunny-burrow",
+    "description": "Beautiful seamless bunny burrow pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Bunny Burrow.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-13",
+    "name": "Butterfly Flutter",
+    "slug": "butterfly-flutter",
+    "description": "Beautiful seamless butterfly flutter pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Butterfly Flutter.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-14",
+    "name": "Cassettes",
+    "slug": "cassettes",
+    "description": "Beautiful seamless cassettes pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Cassettes.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-15",
+    "name": "Chateau Gardens",
+    "slug": "chateau-gardens",
+    "description": "Beautiful seamless chateau gardens pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Chateau Gardens.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-16",
+    "name": "Cherry Blossoms",
+    "slug": "cherry-blossoms",
+    "description": "Beautiful seamless cherry blossoms pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Cherry Blossoms.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-17",
+    "name": "Chinese Lanters",
+    "slug": "chinese-lanters",
+    "description": "Beautiful seamless chinese lanters pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Chinese Lanters.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-18",
+    "name": "Coastal cottage",
+    "slug": "coastal-cottage",
+    "description": "Beautiful seamless coastal cottage pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Coastal cottage.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-19",
+    "name": "Colonial Tapestry",
+    "slug": "colonial-tapestry",
+    "description": "Beautiful seamless colonial tapestry pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Colonial Tapestry.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-20",
+    "name": "Cotton Candy Fluff",
+    "slug": "cotton-candy-fluff",
+    "description": "Beautiful seamless cotton candy fluff pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Cotton Candy Fluff.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-21",
+    "name": "Cubic Serenade",
+    "slug": "cubic-serenade",
+    "description": "Beautiful seamless cubic serenade pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Cubic Serenade.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-22",
+    "name": "Daffodils",
+    "slug": "daffodils",
+    "description": "Beautiful seamless daffodils pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Daffodils.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-23",
+    "name": "Dali's Christmas",
+    "slug": "dali-s-christmas",
+    "description": "Beautiful seamless dali's christmas pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Dali's Christmas.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-24",
+    "name": "Delicate flowers",
+    "slug": "delicate-flowers",
+    "description": "Beautiful seamless delicate flowers pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Delicate flowers.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-25",
+    "name": "Dumpings",
+    "slug": "dumpings",
+    "description": "Beautiful seamless dumpings pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Dumpings.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-26",
+    "name": "Dutch Tulips",
+    "slug": "dutch-tulips",
+    "description": "Beautiful seamless dutch tulips pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Dutch Tulips.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-27",
+    "name": "Easter Blossom",
+    "slug": "easter-blossom",
+    "description": "Beautiful seamless easter blossom pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Easter Blossom.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-28",
+    "name": "Egg Hunt",
+    "slug": "egg-hunt",
+    "description": "Beautiful seamless egg hunt pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Egg Hunt.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-29",
+    "name": "Elegant Cranes",
+    "slug": "elegant-cranes",
+    "description": "Beautiful seamless elegant cranes pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Elegant Cranes.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-30",
+    "name": "Enchanted Grove",
+    "slug": "enchanted-grove",
+    "description": "Beautiful seamless enchanted grove pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Enchanted Grove.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-31",
+    "name": "Ethiopian coffee",
+    "slug": "ethiopian-coffee",
+    "description": "Beautiful seamless ethiopian coffee pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Ethiopian coffee.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-32",
+    "name": "Fantasia Flowers",
+    "slug": "fantasia-flowers",
+    "description": "Beautiful seamless fantasia flowers pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Fantasia Flowers.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-33",
+    "name": "Feathered Friends",
+    "slug": "feathered-friends",
+    "description": "Beautiful seamless feathered friends pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Feathered Friends.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-34",
+    "name": "Figs",
+    "slug": "figs",
+    "description": "Beautiful seamless figs pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Figs.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-35",
+    "name": "Fire Coral",
+    "slug": "fire-coral",
+    "description": "Beautiful seamless fire coral pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Fire Coral.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-36",
+    "name": "Folklore",
+    "slug": "folklore",
+    "description": "Beautiful seamless folklore pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Folklore.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-37",
+    "name": "Forsythia Bushes",
+    "slug": "forsythia-bushes",
+    "description": "Beautiful seamless forsythia bushes pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Forsythia Bushes.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-38",
+    "name": "Fortune Oranges",
+    "slug": "fortune-oranges",
+    "description": "Beautiful seamless fortune oranges pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Fortune Oranges.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-39",
+    "name": "French Vista",
+    "slug": "french-vista",
+    "description": "Beautiful seamless french vista pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/French Vista.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-40",
+    "name": "Fruity Chews",
+    "slug": "fruity-chews",
+    "description": "Beautiful seamless fruity chews pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Fruity Chews.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-41",
+    "name": "Geometric Gardens",
+    "slug": "geometric-gardens",
+    "description": "Beautiful seamless geometric gardens pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Geometric Gardens.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-42",
+    "name": "Grassy plains",
+    "slug": "grassy-plains",
+    "description": "Beautiful seamless grassy plains pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Grassy plains.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-43",
+    "name": "Great Waves",
+    "slug": "great-waves",
+    "description": "Beautiful seamless great waves pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Great Waves.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-44",
+    "name": "Green Pathway",
+    "slug": "green-pathway",
+    "description": "Beautiful seamless green pathway pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Green Pathway.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-45",
+    "name": "Hanging gardens",
+    "slug": "hanging-gardens",
+    "description": "Beautiful seamless hanging gardens pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Hanging gardens.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-46",
+    "name": "Herbology",
+    "slug": "herbology",
+    "description": "Beautiful seamless herbology pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Herbology.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-47",
+    "name": "Highland hideaway",
+    "slug": "highland-hideaway",
+    "description": "Beautiful seamless highland hideaway pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Highland hideaway.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-48",
+    "name": "Himalayan heaven",
+    "slug": "himalayan-heaven",
+    "description": "Beautiful seamless himalayan heaven pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Himalayan heaven.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-49",
+    "name": "Jelly Bean Jubilee",
+    "slug": "jelly-bean-jubilee",
+    "description": "Beautiful seamless jelly bean jubilee pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Jelly Bean Jubilee.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-50",
+    "name": "Koi Pond",
+    "slug": "koi-pond",
+    "description": "Beautiful seamless koi pond pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Koi Pond.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-51",
+    "name": "Korean BBQ",
+    "slug": "korean-bbq",
+    "description": "Beautiful seamless korean bbq pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Korean BBQ.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-52",
+    "name": "Lemons",
+    "slug": "lemons",
+    "description": "Beautiful seamless lemons pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Lemons.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-53",
+    "name": "Lilac Blooms",
+    "slug": "lilac-blooms",
+    "description": "Beautiful seamless lilac blooms pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Lilac Blooms.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-54",
+    "name": "Lucky Roosters",
+    "slug": "lucky-roosters",
+    "description": "Beautiful seamless lucky roosters pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Lucky Roosters.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-55",
+    "name": "Lush Gardens",
+    "slug": "lush-gardens",
+    "description": "Beautiful seamless lush gardens pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Lush Gardens.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-56",
+    "name": "Marshmellow Clouds",
+    "slug": "marshmellow-clouds",
+    "description": "Beautiful seamless marshmellow clouds pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Marshmellow Clouds.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-57",
+    "name": "Mexican Salsa",
+    "slug": "mexican-salsa",
+    "description": "Beautiful seamless mexican salsa pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Mexican Salsa.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-58",
+    "name": "Mexican Talavera",
+    "slug": "mexican-talavera",
+    "description": "Beautiful seamless mexican talavera pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Mexican Talavera.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-59",
+    "name": "Miniature Maze",
+    "slug": "miniature-maze",
+    "description": "Beautiful seamless miniature maze pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Miniature Maze.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-60",
+    "name": "Mint Medley",
+    "slug": "mint-medley",
+    "description": "Beautiful seamless mint medley pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Mint Medley.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-61",
+    "name": "Mist & Fog",
+    "slug": "mist-fog",
+    "description": "Beautiful seamless mist & fog pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Mist & Fog.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-62",
+    "name": "Moroccan Mosaic",
+    "slug": "moroccan-mosaic",
+    "description": "Beautiful seamless moroccan mosaic pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Moroccan Mosaic.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-63",
+    "name": "Mountain refuge",
+    "slug": "mountain-refuge",
+    "description": "Beautiful seamless mountain refuge pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Mountain refuge.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-64",
+    "name": "Music Icons",
+    "slug": "music-icons",
+    "description": "Beautiful seamless music icons pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Music Icons.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-65",
+    "name": "Nordic Nook",
+    "slug": "nordic-nook",
+    "description": "Beautiful seamless nordic nook pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Nordic Nook.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-66",
+    "name": "Oasis",
+    "slug": "oasis",
+    "description": "Beautiful seamless oasis pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Oasis.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-67",
+    "name": "Olive oil",
+    "slug": "olive-oil",
+    "description": "Beautiful seamless olive oil pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Olive oil.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-68",
+    "name": "Olives",
+    "slug": "olives",
+    "description": "Beautiful seamless olives pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Olives.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-69",
+    "name": "Outback",
+    "slug": "outback",
+    "description": "Beautiful seamless outback pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Outback.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-70",
+    "name": "Parisian Chique",
+    "slug": "parisian-chique",
+    "description": "Beautiful seamless parisian chique pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Parisian Chique.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-71",
+    "name": "Paschal Candles",
+    "slug": "paschal-candles",
+    "description": "Beautiful seamless paschal candles pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Paschal Candles.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-72",
+    "name": "Pasture",
+    "slug": "pasture",
+    "description": "Beautiful seamless pasture pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Pasture.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-73",
+    "name": "Peaches",
+    "slug": "peaches",
+    "description": "Beautiful seamless peaches pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Peaches.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-74",
+    "name": "Peruvian Blankets",
+    "slug": "peruvian-blankets",
+    "description": "Beautiful seamless peruvian blankets pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Peruvian Blankets.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-75",
+    "name": "Pixels",
+    "slug": "pixels",
+    "description": "Beautiful seamless pixels pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Pixels.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-76",
+    "name": "Planulla",
+    "slug": "planulla",
+    "description": "Beautiful seamless planulla pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Planulla.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-77",
+    "name": "Playgrounds",
+    "slug": "playgrounds",
+    "description": "Beautiful seamless playgrounds pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Playgrounds.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-78",
+    "name": "Pomegranate",
+    "slug": "pomegranate",
+    "description": "Beautiful seamless pomegranate pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Pomegranate.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-79",
+    "name": "Raked Sands",
+    "slug": "raked-sands",
+    "description": "Beautiful seamless raked sands pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Raked Sands.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-80",
+    "name": "Red Reef",
+    "slug": "red-reef",
+    "description": "Beautiful seamless red reef pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Red Reef.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-81",
+    "name": "Regency Romance",
+    "slug": "regency-romance",
+    "description": "Beautiful seamless regency romance pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Regency Romance.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-82",
+    "name": "Rococo Reverie",
+    "slug": "rococo-reverie",
+    "description": "Beautiful seamless rococo reverie pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Rococo Reverie.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-83",
+    "name": "Rooftop Stroll",
+    "slug": "rooftop-stroll",
+    "description": "Beautiful seamless rooftop stroll pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Rooftop Stroll.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-84",
+    "name": "Sangria & Churros",
+    "slug": "sangria-churros",
+    "description": "Beautiful seamless sangria & churros pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Sangria & Churros.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-85",
+    "name": "Scandinavian Folk Art",
+    "slug": "scandinavian-folk-art",
+    "description": "Beautiful seamless scandinavian folk art pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Scandinavian Folk Art.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-86",
+    "name": "Scandinavian Smörgåsbord",
+    "slug": "scandinavian-sm-rg-sbord",
+    "description": "Beautiful seamless scandinavian smörgåsbord pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Scandinavian Smörgåsbord.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-87",
+    "name": "Scandinavian Winter",
+    "slug": "scandinavian-winter",
+    "description": "Beautiful seamless scandinavian winter pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Scandinavian Winter.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-88",
+    "name": "Sea fan",
+    "slug": "sea-fan",
+    "description": "Beautiful seamless sea fan pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Sea fan.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-89",
+    "name": "Shattered Canvas",
+    "slug": "shattered-canvas",
+    "description": "Beautiful seamless shattered canvas pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Shattered Canvas.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-90",
+    "name": "Snowy Geometry",
+    "slug": "snowy-geometry",
+    "description": "Beautiful seamless snowy geometry pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Snowy Geometry.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-91",
+    "name": "Splintered Visions",
+    "slug": "splintered-visions",
+    "description": "Beautiful seamless splintered visions pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Splintered Visions.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-92",
+    "name": "Spring Blossom",
+    "slug": "spring-blossom",
+    "description": "Beautiful seamless spring blossom pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Spring Blossom.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-93",
+    "name": "Spring Hydrangeas",
+    "slug": "spring-hydrangeas",
+    "description": "Beautiful seamless spring hydrangeas pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Spring Hydrangeas.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-94",
+    "name": "Spring Meadow",
+    "slug": "spring-meadow",
+    "description": "Beautiful seamless spring meadow pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Spring Meadow.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-95",
+    "name": "Sprinkle Sparkle",
+    "slug": "sprinkle-sparkle",
+    "description": "Beautiful seamless sprinkle sparkle pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Sprinkle Sparkle.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-96",
+    "name": "Subtle Pagodas",
+    "slug": "subtle-pagodas",
+    "description": "Beautiful seamless subtle pagodas pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Subtle Pagodas.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-97",
+    "name": "Succulents",
+    "slug": "succulents",
+    "description": "Beautiful seamless succulents pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Succulents.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-98",
+    "name": "Surreal Layers",
+    "slug": "surreal-layers",
+    "description": "Beautiful seamless surreal layers pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Surreal Layers.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-99",
+    "name": "Sushi & Chopsticks",
+    "slug": "sushi-chopsticks",
+    "description": "Beautiful seamless sushi & chopsticks pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Sushi & Chopsticks.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-100",
+    "name": "Symbiosis",
+    "slug": "symbiosis",
+    "description": "Beautiful seamless symbiosis pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Symbiosis.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-101",
+    "name": "Tangled Dimensions",
+    "slug": "tangled-dimensions",
+    "description": "Beautiful seamless tangled dimensions pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Tangled Dimensions.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-102",
+    "name": "Tundra",
+    "slug": "tundra",
+    "description": "Beautiful seamless tundra pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Tundra.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-103",
+    "name": "Turkish Iznik",
+    "slug": "turkish-iznik",
+    "description": "Beautiful seamless turkish iznik pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Turkish Iznik.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-104",
+    "name": "Urban Oasis",
+    "slug": "urban-oasis",
+    "description": "Beautiful seamless urban oasis pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Urban Oasis.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-105",
+    "name": "Victorian Vignettes",
+    "slug": "victorian-vignettes",
+    "description": "Beautiful seamless victorian vignettes pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Victorian Vignettes.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-106",
+    "name": "Vintage Bouquet",
+    "slug": "vintage-bouquet",
+    "description": "Beautiful seamless vintage bouquet pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Vintage Bouquet.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-107",
+    "name": "Water Lillies",
+    "slug": "water-lillies",
+    "description": "Beautiful seamless water lillies pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Water Lillies.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-108",
+    "name": "Watering Waltz",
+    "slug": "watering-waltz",
+    "description": "Beautiful seamless watering waltz pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Watering Waltz.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-109",
+    "name": "Wheat Fields",
+    "slug": "wheat-fields",
+    "description": "Beautiful seamless wheat fields pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Wheat Fields.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-110",
+    "name": "Willow Whispers",
+    "slug": "willow-whispers",
+    "description": "Beautiful seamless willow whispers pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Willow Whispers.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-111",
+    "name": "Wine valley",
+    "slug": "wine-valley",
+    "description": "Beautiful seamless wine valley pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Wine valley.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-112",
+    "name": "Winter Bells",
+    "slug": "winter-bells",
+    "description": "Beautiful seamless winter bells pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Winter Bells.webp",
+    "price": 6.99,
+    "is_active": true
+  },
+  {
+    "id": "pattern-113",
+    "name": "Xin Nian Hao",
+    "slug": "xin-nian-hao",
+    "description": "Beautiful seamless xin nian hao pattern, perfect for your creative projects. Commercial use allowed.",
+    "image_url": "/patterns/Xin Nian Hao.webp",
+    "price": 6.99,
+    "is_active": true
+  }
+]
