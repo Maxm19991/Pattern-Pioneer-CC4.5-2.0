@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { resend } from '@/lib/resend';
 import { OrderConfirmationEmail } from '@/emails/OrderConfirmation';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
