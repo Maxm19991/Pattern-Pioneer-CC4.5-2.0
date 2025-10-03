@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 export default function PatternUploadPage() {
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
