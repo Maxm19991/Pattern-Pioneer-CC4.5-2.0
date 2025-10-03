@@ -2,6 +2,8 @@ import { getSupabaseClient } from '@/lib/supabase';
 import Link from 'next/link';
 import PatternCard from '@/components/admin/PatternCard';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminPatternsPage() {
   const supabase = getSupabaseClient();
 

@@ -1,6 +1,8 @@
 import { getSupabaseClient } from '@/lib/supabase';
 import OrdersTable from '@/components/admin/OrdersTable';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminOrdersPage() {
   const supabase = getSupabaseClient();
 

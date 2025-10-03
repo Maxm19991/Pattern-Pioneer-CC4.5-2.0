@@ -1,6 +1,8 @@
 import { getSupabaseClient } from '@/lib/supabase';
 import UsersTable from '@/components/admin/UsersTable';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminUsersPage() {
   const supabase = getSupabaseClient();
 
