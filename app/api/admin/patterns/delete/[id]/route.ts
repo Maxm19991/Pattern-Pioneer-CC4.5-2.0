@@ -4,9 +4,11 @@ import { auth } from '@/auth';
 import { isAdmin } from '@/lib/admin';
 import Stripe from 'stripe';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+function getSupabase() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+  return createClient(supabaseUrl, supabaseServiceKey);
+}
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-06-20',
@@ -27,6 +29,8 @@ export async function DELETE(
     if (!userIsAdmin) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
+
+    const supabase = getSupabase();
 
     // Fetch pattern to get file names and Stripe IDs
     const { data: pattern, error: fetchError } = await supabase

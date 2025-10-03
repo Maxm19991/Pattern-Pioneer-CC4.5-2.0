@@ -3,9 +3,11 @@ import { createClient } from '@supabase/supabase-js';
 import { auth } from '@/auth';
 import { isAdmin } from '@/lib/admin';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+function getSupabase() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+  return createClient(supabaseUrl, supabaseServiceKey);
+}
 
 export async function GET(
   req: NextRequest,
@@ -22,6 +24,8 @@ export async function GET(
     if (!userIsAdmin) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
+
+    const supabase = getSupabase();
 
     // Fetch pattern
     const { data: pattern, error } = await supabase
