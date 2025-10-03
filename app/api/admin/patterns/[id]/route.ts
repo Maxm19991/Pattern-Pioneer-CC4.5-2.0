@@ -1,13 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
 import { auth } from '@/auth';
 import { isAdmin } from '@/lib/admin';
-
-function getSupabase() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-  return createClient(supabaseUrl, supabaseServiceKey);
-}
+import { getSupabaseClient } from '@/lib/supabase';
 
 export async function GET(
   req: NextRequest,
@@ -25,7 +19,7 @@ export async function GET(
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const supabase = getSupabase();
+    const supabase = getSupabaseClient();
 
     // Fetch pattern
     const { data: pattern, error } = await supabase
