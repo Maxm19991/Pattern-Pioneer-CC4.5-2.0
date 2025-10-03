@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { supabase } from '@/lib/supabase';
+import { resend } from '@/lib/resend';
+import { OrderConfirmationEmail } from '@/emails/OrderConfirmation';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2024-12-18.acacia',
@@ -120,6 +122,8 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
       : [];
 
     // Create order items and download records
+    const emailItems = [];
+
     for (const item of lineItems.data) {
       const patternName = item.description || 'Pattern';
       const price = (item.amount_total || 0) / 100;
@@ -161,7 +165,41 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
         if (downloadError) {
           console.error('Error creating download record:', downloadError);
         }
+
+        // Add to email items
+        emailItems.push({
+          patternName,
+          price: `€${price.toFixed(2)}`,
+          downloadUrl: `${process.env.NEXT_PUBLIC_APP_URL}/account/downloads`,
+        });
       }
+    }
+
+    // Send order confirmation email
+    try {
+      const customerName = session.customer_details?.name || email.split('@')[0];
+
+      await resend.emails.send({
+        from: 'Pattern Pioneer <orders@patternpioneerstudio.com>',
+        to: [email],
+        subject: `Order Confirmation - ${order.id}`,
+        react: OrderConfirmationEmail({
+          customerName,
+          orderNumber: order.id,
+          orderDate: new Date(order.created_at).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          }),
+          items: emailItems,
+          total: `€${total.toFixed(2)}`,
+        }),
+      });
+
+      console.log('Order confirmation email sent to:', email);
+    } catch (emailError) {
+      console.error('Failed to send order confirmation email:', emailError);
+      // Don't fail the webhook if email fails
     }
 
     console.log('Checkout session processed successfully');

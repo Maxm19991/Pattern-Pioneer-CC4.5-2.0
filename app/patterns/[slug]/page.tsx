@@ -30,24 +30,20 @@ export default async function PatternPage({ params }: PatternPageProps) {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Left: Pattern Preview with Tiling */}
+          {/* Left: Pattern Preview */}
           <div>
             <div className="sticky top-24">
               <div className="bg-white rounded-xl p-4 shadow-sm">
-                <div
-                  className="relative overflow-hidden rounded-lg"
-                  style={{
-                    height: '600px',
-                    backgroundImage: `url(${pattern.image_url})`,
-                    backgroundRepeat: 'repeat',
-                    backgroundSize: '300px 300px',
-                  }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/10" />
+                <div className="relative w-full aspect-square overflow-hidden rounded-lg">
+                  <Image
+                    src={pattern.image_url}
+                    alt={pattern.name}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
+                  />
                 </div>
-                <p className="text-sm text-gray-500 mt-2 text-center">
-                  Seamless tiling preview
-                </p>
               </div>
             </div>
           </div>

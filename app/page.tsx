@@ -5,11 +5,12 @@ import { getPatterns } from "@/lib/data/patterns";
 
 export default async function Home() {
   const allPatterns = await getPatterns();
-  // Get 6 featured patterns
-  const featuredPatterns = allPatterns.slice(0, 6);
+  // Randomize and get 6 featured patterns
+  const shuffled = [...allPatterns].sort(() => Math.random() - 0.5);
+  const featuredPatterns = shuffled.slice(0, 6);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       <Navigation />
 
       {/* Hero Section */}
@@ -61,7 +62,7 @@ export default async function Home() {
           <p className="text-gray-600 mb-6 text-center">
             Join our newsletter for updates on new pattern releases
           </p>
-          <form className="flex gap-2">
+          <form className="flex flex-col sm:flex-row gap-2">
             <input
               type="email"
               placeholder="Enter your email"
@@ -70,7 +71,7 @@ export default async function Home() {
             />
             <button
               type="submit"
-              className="bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
+              className="bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition whitespace-nowrap"
             >
               Subscribe
             </button>
