@@ -1,8 +1,10 @@
-import { supabase } from '@/lib/supabase';
+import { getSupabaseClient } from '@/lib/supabase';
 import Link from 'next/link';
 import PatternCard from '@/components/admin/PatternCard';
 
 export default async function AdminPatternsPage() {
+  const supabase = getSupabaseClient();
+
   const { data: patterns } = await supabase
     .from('patterns')
     .select('*')

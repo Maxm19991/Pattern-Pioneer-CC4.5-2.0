@@ -1,7 +1,9 @@
-import { supabase } from '@/lib/supabase';
+import { getSupabaseClient } from '@/lib/supabase';
 import UsersTable from '@/components/admin/UsersTable';
 
 export default async function AdminUsersPage() {
+  const supabase = getSupabaseClient();
+
   // Fetch all users with their order counts
   const { data: users } = await supabase
     .from('users')

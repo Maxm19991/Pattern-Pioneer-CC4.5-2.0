@@ -1,7 +1,9 @@
-import { supabase } from '@/lib/supabase';
+import { getSupabaseClient } from '@/lib/supabase';
 import OrdersTable from '@/components/admin/OrdersTable';
 
 export default async function AdminOrdersPage() {
+  const supabase = getSupabaseClient();
+
   const { data: orders } = await supabase
     .from('orders')
     .select(`
