@@ -1,7 +1,8 @@
-import { supabase } from '../supabase';
+import { getSupabaseClient } from '../supabase';
 import type { Pattern } from '../types';
 
 export async function getPatterns(): Promise<Pattern[]> {
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from('patterns')
     .select('*')
@@ -17,6 +18,7 @@ export async function getPatterns(): Promise<Pattern[]> {
 }
 
 export async function getPatternBySlug(slug: string): Promise<Pattern | null> {
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from('patterns')
     .select('*')
@@ -33,6 +35,7 @@ export async function getPatternBySlug(slug: string): Promise<Pattern | null> {
 }
 
 export async function getPatternById(id: string): Promise<Pattern | null> {
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from('patterns')
     .select('*')
