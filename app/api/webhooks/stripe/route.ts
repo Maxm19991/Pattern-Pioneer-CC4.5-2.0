@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
   switch (event.type) {
     case 'checkout.session.completed':
       const session = event.data.object as Stripe.Checkout.Session;
-      await handleCheckoutSessionCompleted(session);
+      await handleCheckoutSessionCompleted(session, supabase);
       break;
 
     default:
@@ -48,7 +48,10 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ received: true });
 }
 
-async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) {
+async function handleCheckoutSessionCompleted(
+  session: Stripe.Checkout.Session,
+  supabase: ReturnType<typeof getSupabaseClient>
+) {
   try {
     console.log('Processing checkout session:', session.id);
 
