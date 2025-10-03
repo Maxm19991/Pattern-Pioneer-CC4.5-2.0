@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
 import { auth } from '@/auth';
+import { getSupabaseAdmin } from '@/lib/supabase';
 
-function getSupabase() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-  return createClient(supabaseUrl, supabaseServiceKey);
-}
+export const dynamic = 'force-dynamic';
 
 export async function GET(
   req: NextRequest,
@@ -22,7 +18,7 @@ export async function GET(
       );
     }
 
-    const supabase = getSupabase();
+    const supabase = getSupabaseAdmin();
     const patternId = params.patternId;
 
     // Check if user has access to this pattern
