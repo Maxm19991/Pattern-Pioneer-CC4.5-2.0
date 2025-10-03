@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { isAdmin } from '@/lib/admin';
-import { getSupabaseClient } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(
   req: NextRequest,
@@ -19,7 +21,7 @@ export async function GET(
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const supabase = getSupabaseClient();
+    const supabase = getSupabaseAdmin();
 
     // Fetch pattern
     const { data: pattern, error } = await supabase

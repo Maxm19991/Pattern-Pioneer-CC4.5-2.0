@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { isAdmin } from '@/lib/admin';
-import { getSupabaseClient } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 import Stripe from 'stripe';
+
+export const dynamic = 'force-dynamic';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-06-20',
@@ -21,7 +23,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const supabase = getSupabaseClient();
+    const supabase = getSupabaseAdmin();
 
     // Parse form data
     const formData = await req.formData();
