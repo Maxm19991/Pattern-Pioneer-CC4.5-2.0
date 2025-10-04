@@ -163,18 +163,18 @@ export default function PatternEditPage({ params }: { params: { id: string } }) 
           {/* Preview Image (Optional) */}
           <div>
             <label htmlFor="preview" className="block text-sm font-medium text-gray-700 mb-2">
-              Preview Image (1024×1024 WEBP) - Optional
+              Preview Image (1024×1024 PNG or WEBP) - Optional
             </label>
             <input
               type="file"
               id="preview"
               name="preview"
-              accept="image/webp"
+              accept="image/png,image/webp"
               disabled={saving}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 disabled:bg-gray-100"
             />
             <p className="text-xs text-gray-500 mt-1">
-              Leave empty to keep existing preview image
+              Leave empty to keep existing preview image (free download)
             </p>
           </div>
 
