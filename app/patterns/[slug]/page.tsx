@@ -1,6 +1,7 @@
 import { getPatternBySlug, getPatterns } from "@/lib/data/patterns";
 import Navigation from "@/components/Navigation";
 import AddToCartButton from "@/components/AddToCartButton";
+import FavoriteButton from "@/components/FavoriteButton";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
@@ -29,12 +30,15 @@ export default async function PatternPage({ params }: PatternPageProps) {
     notFound();
   }
 
-  // Check if user owns this pattern
+  // Check if user owns this pattern and if it's favorited
   const session = await auth();
   let userOwnsPattern = false;
+  let isFavorited = false;
 
   if (session?.user?.email) {
     const supabase = getSupabaseClient();
+
+    // Check ownership
     const { data: download } = await supabase
       .from('downloads')
       .select('id')
@@ -43,6 +47,16 @@ export default async function PatternPage({ params }: PatternPageProps) {
       .single();
 
     userOwnsPattern = !!download;
+
+    // Check if favorited
+    const { data: favorite } = await supabase
+      .from('favorites')
+      .select('id')
+      .eq('email', session.user.email)
+      .eq('pattern_id', pattern.id)
+      .single();
+
+    isFavorited = !!favorite;
   }
 
   return (
@@ -71,9 +85,12 @@ export default async function PatternPage({ params }: PatternPageProps) {
 
           {/* Right: Pattern Details */}
           <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              {pattern.name}
-            </h1>
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <h1 className="text-4xl font-bold text-gray-900">
+                {pattern.name}
+              </h1>
+              <FavoriteButton patternId={pattern.id} initialIsFavorited={isFavorited} />
+            </div>
             <p className="text-gray-600 mb-6">{pattern.description}</p>
 
             <div className="bg-white rounded-xl p-6 shadow-sm mb-6">

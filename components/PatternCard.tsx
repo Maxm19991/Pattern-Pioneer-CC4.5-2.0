@@ -1,13 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Pattern } from "@/lib/types";
+import FavoriteButton from "./FavoriteButton";
 
 interface PatternCardProps {
   pattern: Pattern;
   isOwned?: boolean;
+  isFavorited?: boolean;
 }
 
-export default function PatternCard({ pattern, isOwned = false }: PatternCardProps) {
+export default function PatternCard({ pattern, isOwned = false, isFavorited = false }: PatternCardProps) {
   return (
     <Link
       href={`/patterns/${pattern.slug}`}
@@ -30,11 +32,16 @@ export default function PatternCard({ pattern, isOwned = false }: PatternCardPro
           </div>
         )}
       </div>
-      <div className="p-4">
-        <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-primary-600 transition">
-          {pattern.name}
-        </h3>
-        <p className="text-primary-600 font-bold">€{pattern.price.toFixed(2)}</p>
+      <div className="p-4 relative">
+        <div className="pr-12">
+          <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-primary-600 transition">
+            {pattern.name}
+          </h3>
+          <p className="text-primary-600 font-bold">€{pattern.price.toFixed(2)}</p>
+        </div>
+        <div className="absolute bottom-4 right-4">
+          <FavoriteButton patternId={pattern.id} initialIsFavorited={isFavorited} />
+        </div>
       </div>
     </Link>
   );

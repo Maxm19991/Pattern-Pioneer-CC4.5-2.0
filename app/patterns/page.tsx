@@ -9,18 +9,29 @@ export const dynamic = 'force-dynamic';
 export default async function PatternsPage() {
   const patterns = await getPatterns();
 
-  // Get user's owned patterns
+  // Get user's owned patterns and favorites
   const session = await auth();
   let ownedPatternIds: string[] = [];
+  let favoritedPatternIds: string[] = [];
 
   if (session?.user?.email) {
     const supabase = getSupabaseClient();
+
+    // Fetch owned patterns
     const { data: downloads } = await supabase
       .from('downloads')
       .select('pattern_id')
       .eq('email', session.user.email);
 
     ownedPatternIds = downloads?.map(d => d.pattern_id) || [];
+
+    // Fetch favorited patterns
+    const { data: favorites } = await supabase
+      .from('favorites')
+      .select('pattern_id')
+      .eq('email', session.user.email);
+
+    favoritedPatternIds = favorites?.map(f => f.pattern_id) || [];
   }
 
   return (
@@ -41,6 +52,7 @@ export default async function PatternsPage() {
               key={pattern.id}
               pattern={pattern}
               isOwned={ownedPatternIds.includes(pattern.id)}
+              isFavorited={favoritedPatternIds.includes(pattern.id)}
             />
           ))}
         </div>
