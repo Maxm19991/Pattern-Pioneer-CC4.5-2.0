@@ -2,10 +2,12 @@
 
 import Navigation from "@/components/Navigation";
 import { useCart } from "@/lib/store/cart";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function CartPage() {
+  const { data: session } = useSession();
   const { items, removeItem, getTotal } = useCart();
   const total = getTotal();
 
@@ -99,12 +101,21 @@ export default function CartPage() {
                 <span>€{total.toFixed(2)}</span>
               </div>
 
-              <Link
-                href="/checkout"
-                className="block w-full bg-primary-500 text-white py-3 px-6 rounded-lg font-semibold text-center hover:bg-primary-600 transition"
-              >
-                Proceed to Checkout
-              </Link>
+              {session ? (
+                <Link
+                  href="/checkout"
+                  className="block w-full bg-primary-500 text-white py-3 px-6 rounded-lg font-semibold text-center hover:bg-primary-600 transition"
+                >
+                  Proceed to Checkout
+                </Link>
+              ) : (
+                <Link
+                  href="/auth/signin?callbackUrl=/checkout"
+                  className="block w-full bg-primary-500 text-white py-3 px-6 rounded-lg font-semibold text-center hover:bg-primary-600 transition"
+                >
+                  Sign In to Checkout
+                </Link>
+              )}
 
               <Link
                 href="/patterns"

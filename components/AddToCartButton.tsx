@@ -3,12 +3,16 @@
 import { useCart } from "@/lib/store/cart";
 import type { Pattern } from "@/lib/types";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface AddToCartButtonProps {
   pattern: Pattern;
 }
 
 export default function AddToCartButton({ pattern }: AddToCartButtonProps) {
+  const { data: session } = useSession();
+  const router = useRouter();
   const [added, setAdded] = useState(false);
   const addItem = useCart((state) => state.addItem);
   const items = useCart((state) => state.items);
@@ -16,6 +20,12 @@ export default function AddToCartButton({ pattern }: AddToCartButtonProps) {
   const isInCart = items.some((item) => item.pattern.id === pattern.id);
 
   const handleClick = () => {
+    if (!session) {
+      // Redirect to sign in if not authenticated
+      router.push('/auth/signin?callbackUrl=' + encodeURIComponent(window.location.pathname));
+      return;
+    }
+
     if (!isInCart) {
       addItem(pattern);
       setAdded(true);
@@ -35,7 +45,7 @@ export default function AddToCartButton({ pattern }: AddToCartButtonProps) {
           : 'bg-primary-500 text-white hover:bg-primary-600'
       }`}
     >
-      {isInCart ? 'Already in Cart' : added ? 'Added!' : 'Add to Cart'}
+      {isInCart ? 'Already in Cart' : added ? 'Added!' : !session ? 'Sign In to Purchase' : 'Add to Cart'}
     </button>
   );
 }

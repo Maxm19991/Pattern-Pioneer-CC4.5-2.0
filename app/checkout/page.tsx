@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import Navigation from '@/components/Navigation';
 import { useCart } from '@/lib/store/cart';
 import { loadStripe } from '@stripe/stripe-js';
@@ -12,15 +13,18 @@ const stripePromise = loadStripe(
 
 export default function CheckoutPage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const { items, getTotal } = useCart();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (items.length === 0) {
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin?callbackUrl=/checkout');
+    } else if (items.length === 0) {
       router.push('/cart');
     }
-  }, [items, router]);
+  }, [items, router, status]);
 
   const handleCheckout = async () => {
     setLoading(true);
@@ -59,8 +63,17 @@ export default function CheckoutPage() {
     }
   };
 
-  if (items.length === 0) {
-    return null;
+  if (status === 'loading' || items.length === 0) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Navigation />
+        <main className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="text-center py-20">
+            <p className="text-gray-600">Loading...</p>
+          </div>
+        </main>
+      </div>
+    );
   }
 
   return (

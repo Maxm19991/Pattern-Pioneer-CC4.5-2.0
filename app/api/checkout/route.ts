@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { auth } from '@/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,6 +10,16 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
 
 export async function POST(req: NextRequest) {
   try {
+    // Require authentication
+    const session = await auth();
+
+    if (!session?.user?.email) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
     const { items } = await req.json();
 
     if (!items || items.length === 0) {
@@ -34,20 +45,20 @@ export async function POST(req: NextRequest) {
     }));
 
     // Create Stripe checkout session
-    const session = await stripe.checkout.sessions.create({
+    const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
       line_items: lineItems,
       success_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/cart`,
       billing_address_collection: 'required',
-      customer_email: undefined, // Will be collected in checkout
+      customer_email: session.user.email, // Pre-fill with authenticated user's email
       metadata: {
         items: JSON.stringify(items.map((item: any) => item.pattern.id)),
       },
     });
 
-    return NextResponse.json({ sessionId: session.id, url: session.url });
+    return NextResponse.json({ sessionId: checkoutSession.id, url: checkoutSession.url });
   } catch (error: any) {
     console.error('Stripe checkout error:', error);
     return NextResponse.json(
