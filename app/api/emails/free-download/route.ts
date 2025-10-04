@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { data, error } = await resend.emails.send({
-      from: 'Pattern Pioneer <downloads@patternpioneerstudio.com>',
+      from: 'Pattern Pioneer <orders@patternpioneerstudio.com>',
       to: [email],
       subject: `Your Free ${patternName} Pattern is Ready!`,
       react: FreeDownloadEmail({
