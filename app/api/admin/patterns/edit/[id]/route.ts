@@ -81,20 +81,22 @@ export async function PUT(
 
     // Upload new preview image if provided
     if (previewFile && previewFile.size > 0) {
-      const previewFileName = `${slug}.webp`;
+      const previewExtension = previewFile.name.endsWith('.png') ? 'png' : 'webp';
+      const previewContentType = previewExtension === 'png' ? 'image/png' : 'image/webp';
+      const previewFileName = `${slug}.${previewExtension}`;
 
-      // Delete old preview if different filename
-      if (existingPattern.slug !== slug) {
+      // Delete old preview files (try both extensions)
+      if (existingPattern.slug !== slug || previewExtension !== (existingPattern.image_url?.endsWith('.png') ? 'png' : 'webp')) {
         await supabase.storage
           .from('pattern-previews')
-          .remove([`${existingPattern.slug}.webp`]);
+          .remove([`${existingPattern.slug}.webp`, `${existingPattern.slug}.png`]);
       }
 
       const previewBuffer = await previewFile.arrayBuffer();
       const { error: previewError } = await supabase.storage
         .from('pattern-previews')
         .upload(previewFileName, previewBuffer, {
-          contentType: 'image/webp',
+          contentType: previewContentType,
           cacheControl: '3600',
           upsert: true,
         });
