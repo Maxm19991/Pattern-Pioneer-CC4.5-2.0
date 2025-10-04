@@ -90,6 +90,9 @@ export async function POST(request: NextRequest) {
       // Don't fail the request if Mailerlite sync fails - we still have the email in Supabase
     }
 
+    // Generate unique download token
+    const downloadToken = `${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
+
     // Create download record
     const { error: downloadError } = await supabase
       .from('downloads')
@@ -98,6 +101,7 @@ export async function POST(request: NextRequest) {
           email,
           pattern_id: patternId,
           is_free: true,
+          download_token: downloadToken,
         },
       ]);
 
@@ -110,7 +114,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Send email with free download link
-    const downloadUrl = `${process.env.NEXT_PUBLIC_APP_URL}/account/downloads`;
+    const downloadUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/download/${downloadToken}`;
 
     try {
       await resend.emails.send({
