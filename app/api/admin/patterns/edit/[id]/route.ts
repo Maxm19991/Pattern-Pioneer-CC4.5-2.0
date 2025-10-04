@@ -201,6 +201,7 @@ export async function PUT(
         category: category || null,
         price: parseFloat(price),
         image_url: imageUrl,
+        free_image_url: imageUrl,
       })
       .eq('id', params.id)
       .select()

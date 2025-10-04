@@ -129,6 +129,7 @@ export async function POST(req: NextRequest) {
           category: category || null,
           price: parseFloat(price),
           image_url: previewUrlData.publicUrl,
+          free_image_url: previewUrlData.publicUrl,
           stripe_product_id: stripeProduct.id,
           stripe_price_id: stripeProduct.default_price as string,
         },
