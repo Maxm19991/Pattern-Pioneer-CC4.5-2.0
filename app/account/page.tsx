@@ -46,11 +46,14 @@ export default async function AccountPage() {
             <p className="text-gray-600">Access your purchased patterns</p>
           </Link>
 
-          <div className="bg-white rounded-xl p-6 shadow-sm opacity-50">
+          <Link
+            href="/account/orders"
+            className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition"
+          >
             <div className="flex items-center mb-4">
-              <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mr-4">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
                 <svg
-                  className="w-6 h-6 text-gray-600"
+                  className="w-6 h-6 text-blue-600"
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -63,14 +66,17 @@ export default async function AccountPage() {
               </div>
               <h2 className="text-xl font-bold text-gray-900">Orders</h2>
             </div>
-            <p className="text-gray-600">Coming soon</p>
-          </div>
+            <p className="text-gray-600">View your purchase history</p>
+          </Link>
 
-          <div className="bg-white rounded-xl p-6 shadow-sm opacity-50">
+          <Link
+            href="/account/favorites"
+            className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition"
+          >
             <div className="flex items-center mb-4">
-              <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mr-4">
+              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
                 <svg
-                  className="w-6 h-6 text-gray-600"
+                  className="w-6 h-6 text-red-600"
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -83,15 +89,8 @@ export default async function AccountPage() {
               </div>
               <h2 className="text-xl font-bold text-gray-900">Favorites</h2>
             </div>
-            <p className="text-gray-600">Coming soon</p>
-          </div>
-        </div>
-
-        <div className="mt-8 bg-blue-50 border border-blue-200 text-blue-800 px-6 py-4 rounded-lg">
-          <p className="font-semibold mb-1">Authentication Coming Soon</p>
-          <p className="text-sm">
-            Full authentication with NextAuth will be added in the next phase. For now, this is a preview of the account dashboard.
-          </p>
+            <p className="text-gray-600">Your saved patterns</p>
+          </Link>
         </div>
       </main>
     </div>
