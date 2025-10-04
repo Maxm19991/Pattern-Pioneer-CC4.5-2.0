@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseClient } from '@/lib/supabase';
 import { resend } from '@/lib/resend';
 import { FreeDownloadEmail } from '@/emails/FreeDownload';
+import { addSubscriberToMailerlite } from '@/lib/mailerlite';
 
 export const dynamic = 'force-dynamic';
 
@@ -80,6 +81,13 @@ export async function POST(request: NextRequest) {
         console.error('Newsletter subscription error:', subscriptionError);
         // Don't fail the request if newsletter signup fails
       }
+    }
+
+    // Add to Mailerlite
+    const mailerliteResult = await addSubscriberToMailerlite(email, 'free_download');
+    if (!mailerliteResult.success) {
+      console.error('Mailerlite sync error:', mailerliteResult.error);
+      // Don't fail the request if Mailerlite sync fails - we still have the email in Supabase
     }
 
     // Create download record
