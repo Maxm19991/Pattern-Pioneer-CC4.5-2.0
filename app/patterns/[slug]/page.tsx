@@ -3,12 +3,17 @@ import Navigation from "@/components/Navigation";
 import AddToCartButton from "@/components/AddToCartButton";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { auth } from "@/auth";
+import { getSupabaseClient } from "@/lib/supabase";
+import Link from "next/link";
 
 interface PatternPageProps {
   params: {
     slug: string;
   };
 }
+
+export const dynamic = 'force-dynamic';
 
 export async function generateStaticParams() {
   const patterns = await getPatterns();
@@ -22,6 +27,22 @@ export default async function PatternPage({ params }: PatternPageProps) {
 
   if (!pattern) {
     notFound();
+  }
+
+  // Check if user owns this pattern
+  const session = await auth();
+  let userOwnsPattern = false;
+
+  if (session?.user?.email) {
+    const supabase = getSupabaseClient();
+    const { data: download } = await supabase
+      .from('downloads')
+      .select('id')
+      .eq('email', session.user.email)
+      .eq('pattern_id', pattern.id)
+      .single();
+
+    userOwnsPattern = !!download;
   }
 
   return (
@@ -63,7 +84,19 @@ export default async function PatternPage({ params }: PatternPageProps) {
                 <span className="text-gray-500">4096×4096 PNG</span>
               </div>
 
-              <AddToCartButton pattern={pattern} />
+              {userOwnsPattern ? (
+                <Link
+                  href="/account/downloads"
+                  className="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition flex items-center justify-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  Already Purchased - View Downloads
+                </Link>
+              ) : (
+                <AddToCartButton pattern={pattern} />
+              )}
 
               <div className="border-t border-gray-200 pt-4 mt-4">
                 <h3 className="font-semibold text-gray-900 mb-2">
