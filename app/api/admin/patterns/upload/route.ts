@@ -59,15 +59,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Upload preview image (1024x1024 PNG or WEBP) to public bucket
-    const previewExtension = previewFile.name.endsWith('.png') ? 'png' : 'webp';
-    const previewContentType = previewExtension === 'png' ? 'image/png' : 'image/webp';
-    const previewFileName = `${slug}.${previewExtension}`;
+    // Upload preview image (1024x1024 PNG) to public bucket
+    const previewFileName = `${slug}.png`;
     const previewBuffer = await previewFile.arrayBuffer();
     const { error: previewError } = await supabase.storage
       .from('pattern-previews')
       .upload(previewFileName, previewBuffer, {
-        contentType: previewContentType,
+        contentType: 'image/png',
         cacheControl: '3600',
         upsert: false,
       });
