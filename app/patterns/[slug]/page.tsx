@@ -2,6 +2,7 @@ import { getPatternBySlug, getPatterns } from "@/lib/data/patterns";
 import Navigation from "@/components/Navigation";
 import AddToCartButton from "@/components/AddToCartButton";
 import FavoriteButton from "@/components/FavoriteButton";
+import FreeDownloadForm from "@/components/FreeDownloadForm";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
@@ -115,25 +116,7 @@ export default async function PatternPage({ params }: PatternPageProps) {
                 <AddToCartButton pattern={pattern} />
               )}
 
-              <div className="border-t border-gray-200 pt-4 mt-4">
-                <h3 className="font-semibold text-gray-900 mb-2">
-                  Get Free Version (1024×1024)
-                </h3>
-                <form className="flex gap-2">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    required
-                  />
-                  <button
-                    type="submit"
-                    className="bg-gray-900 text-white px-6 py-2 rounded-lg font-semibold hover:bg-gray-800 transition"
-                  >
-                    Download
-                  </button>
-                </form>
-              </div>
+              <FreeDownloadForm patternId={pattern.id} patternName={pattern.name} />
             </div>
 
             <div className="bg-white rounded-xl p-6 shadow-sm">
