@@ -7,7 +7,7 @@ import { OrderConfirmationEmail } from '@/emails/OrderConfirmation';
 export const dynamic = 'force-dynamic';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2024-06-20',
+  apiVersion: '2025-09-30.clover' as any,
 });
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
