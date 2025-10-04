@@ -25,7 +25,7 @@ export default function AuthButton() {
 
   if (status === 'loading') {
     return (
-      <div className="bg-gray-200 animate-pulse rounded-full w-10 h-10" />
+      <div className="bg-gray-200 animate-pulse rounded-full w-9 h-9 sm:w-10 sm:h-10" />
     );
   }
 
@@ -44,7 +44,7 @@ export default function AuthButton() {
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-10 h-10 rounded-full bg-gray-900 text-white font-semibold flex items-center justify-center hover:bg-gray-800 transition focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
+          className="w-9 h-9 sm:w-10 sm:h-10 text-sm sm:text-base rounded-full bg-gray-900 text-white font-semibold flex items-center justify-center hover:bg-gray-800 transition focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
           aria-label="User menu"
         >
           {initials}
@@ -104,7 +104,7 @@ export default function AuthButton() {
   return (
     <Link
       href="/auth/signin"
-      className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition"
+      className="bg-gray-900 text-white px-3 py-1.5 sm:px-4 sm:py-2 text-sm rounded-lg hover:bg-gray-800 transition"
     >
       Sign In
     </Link>
