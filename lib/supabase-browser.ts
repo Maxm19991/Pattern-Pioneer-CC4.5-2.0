@@ -4,11 +4,15 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 // Client-side Supabase client for browser uploads
-// Admin pages are protected by NextAuth, so public storage policies are safe
-export const supabaseBrowser = createClient(supabaseUrl, supabaseAnonKey);
+// Uses anon key but admin pages are protected by NextAuth
+export const supabaseBrowser = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: false,
+  },
+});
 
 /**
- * Upload a file directly to Supabase Storage from the browser
+ * Upload a file to Supabase Storage via server-side API (bypasses RLS)
  * @param bucket - Storage bucket name
  * @param path - File path in bucket
  * @param file - File to upload
@@ -20,23 +24,24 @@ export async function uploadFileToSupabase(
   file: File
 ): Promise<{ url?: string; error?: string }> {
   try {
-    // Upload file
-    const { error: uploadError } = await supabaseBrowser.storage
-      .from(bucket)
-      .upload(path, file, {
-        cacheControl: '3600',
-        upsert: true,
-      });
+    // Upload via server-side API to bypass RLS using service role key
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('bucket', bucket);
+    formData.append('path', path);
 
-    if (uploadError) {
-      console.error('Upload error:', uploadError);
-      return { error: uploadError.message };
+    const response = await fetch('/api/admin/storage/upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return { error: data.error || 'Upload failed' };
     }
 
-    // Get public URL
-    const { data } = supabaseBrowser.storage.from(bucket).getPublicUrl(path);
-
-    return { url: data.publicUrl };
+    return { url: data.url };
   } catch (error: any) {
     console.error('Upload exception:', error);
     return { error: error.message || 'Upload failed' };
