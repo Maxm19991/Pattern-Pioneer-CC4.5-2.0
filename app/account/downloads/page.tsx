@@ -1,7 +1,7 @@
 import Navigation from "@/components/Navigation";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { getSupabaseClient } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase";
 import DownloadButton from "@/components/DownloadButton";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,7 +15,7 @@ export default async function DownloadsPage() {
     redirect('/auth/signin');
   }
 
-  const supabase = getSupabaseClient();
+  const supabase = getSupabaseAdmin();
 
   // Fetch user's downloads
   const { data: downloads } = await supabase

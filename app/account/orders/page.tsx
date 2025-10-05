@@ -1,7 +1,7 @@
 import Navigation from "@/components/Navigation";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { getSupabaseClient } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase";
 import Link from "next/link";
 
 export const dynamic = 'force-dynamic';
@@ -13,7 +13,7 @@ export default async function OrdersPage() {
     redirect('/auth/signin');
   }
 
-  const supabase = getSupabaseClient();
+  const supabase = getSupabaseAdmin();
 
   // Fetch user's orders with order items
   const { data: orders } = await supabase

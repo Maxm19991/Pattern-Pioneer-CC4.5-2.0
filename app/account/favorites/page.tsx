@@ -1,7 +1,7 @@
 import Navigation from "@/components/Navigation";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { getSupabaseClient } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -14,7 +14,7 @@ export default async function FavoritesPage() {
     redirect('/auth/signin');
   }
 
-  const supabase = getSupabaseClient();
+  const supabase = getSupabaseAdmin();
 
   // Try to fetch user's favorites
   let favorites = null;
