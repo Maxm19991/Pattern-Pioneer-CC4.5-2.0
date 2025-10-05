@@ -51,30 +51,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           id: user.id,
           email: user.email,
           name: user.name,
-          isAdmin: user.is_admin || false,
         };
       },
     }),
   ],
-  callbacks: {
-    ...authConfig.callbacks,
-    async jwt({ token, user }) {
-      // Add is_admin to token on sign in
-      if (user) {
-        token.isAdmin = (user as any).isAdmin || false;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      // Add is_admin to session
-      if (session.user) {
-        (session.user as any).isAdmin = token.isAdmin || false;
-      }
-      return session;
-    },
-  },
   session: {
     strategy: 'jwt',
-    maxAge: 7 * 24 * 60 * 60, // 7 days
   },
 });
