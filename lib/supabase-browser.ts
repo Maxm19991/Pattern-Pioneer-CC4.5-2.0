@@ -33,7 +33,16 @@ export async function uploadFileToSupabase(
       body: JSON.stringify({ bucket, path }),
     });
 
-    const urlData = await urlResponse.json();
+    // Handle non-JSON responses
+    let urlData;
+    const contentType = urlResponse.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      urlData = await urlResponse.json();
+    } else {
+      const text = await urlResponse.text();
+      console.error('Non-JSON response:', text);
+      return { error: `Server error: ${text.substring(0, 200)}` };
+    }
 
     if (!urlResponse.ok) {
       return { error: urlData.error || 'Failed to get upload URL' };
