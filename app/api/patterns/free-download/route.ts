@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseClient } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 import { resend } from '@/lib/resend';
 import { FreeDownloadEmail } from '@/emails/FreeDownload';
 import { addSubscriberToMailerlite } from '@/lib/mailerlite';
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = getSupabaseClient();
+    const supabase = getSupabaseAdmin();
 
     // Get pattern details
     const { data: pattern, error: patternError } = await supabase
