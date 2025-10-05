@@ -5,7 +5,7 @@ import { checkRateLimit, RateLimitPresets } from '@/lib/rate-limit';
 export const dynamic = 'force-dynamic';
 
 // Wrap POST handler with rate limiting for login attempts
-async function rateLimitedPOST(req: NextRequest, context: any) {
+async function rateLimitedPOST(req: NextRequest) {
   // Apply rate limiting to signin requests
   const rateLimitResult = checkRateLimit(req, RateLimitPresets.auth);
   if (rateLimitResult) {
@@ -13,7 +13,7 @@ async function rateLimitedPOST(req: NextRequest, context: any) {
   }
 
   // Call original NextAuth POST handler
-  return handlers.POST(req, context);
+  return handlers.POST(req);
 }
 
 export const GET = handlers.GET;
