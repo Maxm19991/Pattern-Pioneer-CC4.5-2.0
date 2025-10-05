@@ -96,7 +96,7 @@ export async function POST(req: NextRequest) {
         .remove([`premium/${fullFileName}`]);
       await stripe.products.update(stripeProduct.id, { active: false });
       return NextResponse.json(
-        { error: 'Failed to create pattern record' },
+        { error: `Failed to create pattern record: ${dbError.message || JSON.stringify(dbError)}` },
         { status: 500 }
       );
     }
@@ -105,10 +105,10 @@ export async function POST(req: NextRequest) {
       success: true,
       pattern,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Upload error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: `Internal server error: ${error.message || error}` },
       { status: 500 }
     );
   }
