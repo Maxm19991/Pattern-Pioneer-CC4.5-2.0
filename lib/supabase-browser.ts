@@ -12,7 +12,7 @@ export const supabaseBrowser = createClient(supabaseUrl, supabaseAnonKey, {
 });
 
 /**
- * Upload a file to Supabase Storage via server-side API (bypasses RLS)
+ * Upload a file to Supabase Storage using signed URLs (bypasses RLS and Vercel limits)
  * @param bucket - Storage bucket name
  * @param path - File path in bucket
  * @param file - File to upload
@@ -24,24 +24,39 @@ export async function uploadFileToSupabase(
   file: File
 ): Promise<{ url?: string; error?: string }> {
   try {
-    // Upload via server-side API to bypass RLS using service role key
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('bucket', bucket);
-    formData.append('path', path);
-
-    const response = await fetch('/api/admin/storage/upload', {
+    // Step 1: Get signed upload URL from server (uses service role key)
+    const urlResponse = await fetch('/api/admin/storage/upload', {
       method: 'POST',
-      body: formData,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ bucket, path }),
     });
 
-    const data = await response.json();
+    const urlData = await urlResponse.json();
 
-    if (!response.ok) {
-      return { error: data.error || 'Upload failed' };
+    if (!urlResponse.ok) {
+      return { error: urlData.error || 'Failed to get upload URL' };
     }
 
-    return { url: data.url };
+    // Step 2: Upload file directly to Supabase using signed URL
+    // This bypasses Vercel entirely - no file size limits!
+    const uploadResponse = await fetch(urlData.signedUrl, {
+      method: 'PUT',
+      body: file,
+      headers: {
+        'Content-Type': file.type,
+        'x-upsert': 'true', // Allow overwriting existing files
+      },
+    });
+
+    if (!uploadResponse.ok) {
+      const errorText = await uploadResponse.text();
+      return { error: `Upload failed: ${errorText}` };
+    }
+
+    // Step 3: Return the public URL
+    return { url: urlData.publicUrl };
   } catch (error: any) {
     console.error('Upload exception:', error);
     return { error: error.message || 'Upload failed' };

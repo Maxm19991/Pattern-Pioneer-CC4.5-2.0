@@ -5,6 +5,7 @@ import { getSupabaseAdmin } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
 
+// Get a signed upload URL (doesn't upload the file, just returns URL)
 export async function POST(req: NextRequest) {
   try {
     // Check admin authentication
@@ -18,12 +19,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const formData = await req.formData();
-    const file = formData.get('file') as File;
-    const bucket = formData.get('bucket') as string;
-    const path = formData.get('path') as string;
+    const body = await req.json();
+    const { bucket, path } = body;
 
-    if (!file || !bucket || !path) {
+    if (!bucket || !path) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -32,32 +31,34 @@ export async function POST(req: NextRequest) {
 
     const supabase = getSupabaseAdmin();
 
-    // Upload file using service role (bypasses RLS)
-    const fileBuffer = await file.arrayBuffer();
-    const { error: uploadError } = await supabase.storage
+    // Create a signed upload URL (valid for 5 minutes)
+    const { data, error } = await supabase.storage
       .from(bucket)
-      .upload(path, fileBuffer, {
-        contentType: file.type,
-        cacheControl: '3600',
-        upsert: true,
-      });
+      .createSignedUploadUrl(path);
 
-    if (uploadError) {
-      console.error('Upload error:', uploadError);
+    if (error) {
+      console.error('Signed URL error:', error);
       return NextResponse.json(
-        { error: uploadError.message },
+        { error: error.message },
         { status: 500 }
       );
     }
 
-    // Get public URL
-    const { data } = supabase.storage.from(bucket).getPublicUrl(path);
+    // Get public URL for after upload completes
+    const { data: publicUrlData } = supabase.storage
+      .from(bucket)
+      .getPublicUrl(path);
 
-    return NextResponse.json({ url: data.publicUrl });
+    return NextResponse.json({
+      signedUrl: data.signedUrl,
+      token: data.token,
+      path: data.path,
+      publicUrl: publicUrlData.publicUrl,
+    });
   } catch (error: any) {
-    console.error('Storage upload error:', error);
+    console.error('Storage upload URL error:', error);
     return NextResponse.json(
-      { error: error.message || 'Upload failed' },
+      { error: error.message || 'Failed to create upload URL' },
       { status: 500 }
     );
   }
