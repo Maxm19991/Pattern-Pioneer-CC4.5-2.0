@@ -2,11 +2,11 @@
   "functions": {
     "app/api/admin/patterns/upload/route.ts": {
       "maxDuration": 60,
-      "memory": 3008
+      "memory": 1024
     },
     "app/api/admin/patterns/edit/[id]/route.ts": {
       "maxDuration": 60,
-      "memory": 3008
+      "memory": 1024
     }
   }
 }
