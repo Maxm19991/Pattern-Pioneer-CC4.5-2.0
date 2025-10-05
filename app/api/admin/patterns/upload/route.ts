@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { isAdmin } from '@/lib/admin';
 import { getSupabaseAdmin } from '@/lib/supabase';
-import { logError } from '@/lib/error-handling';
 import Stripe from 'stripe';
 
 export const dynamic = 'force-dynamic';
@@ -90,7 +89,7 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (dbError) {
-      logError('Pattern database insertion', dbError);
+      console.error('Database error:', dbError);
       // Clean up uploaded files and Stripe product
       await supabase.storage.from('pattern-previews').remove([previewFileName]);
       await supabase.storage
@@ -98,7 +97,7 @@ export async function POST(req: NextRequest) {
         .remove([`premium/${fullFileName}`]);
       await stripe.products.update(stripeProduct.id, { active: false });
       return NextResponse.json(
-        { error: 'Failed to create pattern record' },
+        { error: `Failed to create pattern record: ${dbError.message || JSON.stringify(dbError)}` },
         { status: 500 }
       );
     }
@@ -108,9 +107,9 @@ export async function POST(req: NextRequest) {
       pattern,
     });
   } catch (error: any) {
-    logError('Pattern upload endpoint', error);
+    console.error('Upload error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: `Internal server error: ${error.message || error}` },
       { status: 500 }
     );
   }

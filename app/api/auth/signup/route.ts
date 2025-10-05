@@ -1,18 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseClient } from '@/lib/supabase';
-import { checkRateLimit, RateLimitPresets } from '@/lib/rate-limit';
 import bcrypt from 'bcryptjs';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
-    // Rate limiting: 5 attempts per 15 minutes
-    const rateLimitResult = checkRateLimit(req, RateLimitPresets.auth);
-    if (rateLimitResult) {
-      return rateLimitResult;
-    }
-
     const { email, password } = await req.json();
 
     if (!email || !password) {
@@ -22,26 +15,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Validate password strength
+    // Validate password length
     if (password.length < 8) {
       return NextResponse.json(
         { error: 'Password must be at least 8 characters' },
-        { status: 400 }
-      );
-    }
-
-    // Check for password complexity
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasNumber = /[0-9]/.test(password);
-    const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
-
-    if (!hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
-      return NextResponse.json(
-        {
-          error:
-            'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
-        },
         { status: 400 }
       );
     }
@@ -56,9 +33,8 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (existingUser) {
-      // Use generic error to prevent user enumeration
       return NextResponse.json(
-        { error: 'Unable to create account. Please try a different email or sign in.' },
+        { error: 'An account with this email already exists' },
         { status: 400 }
       );
     }

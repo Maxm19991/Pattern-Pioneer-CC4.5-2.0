@@ -3,19 +3,11 @@ import { getSupabaseClient } from '@/lib/supabase';
 import { resend } from '@/lib/resend';
 import { FreeDownloadEmail } from '@/emails/FreeDownload';
 import { addSubscriberToMailerlite } from '@/lib/mailerlite';
-import { checkRateLimit, RateLimitPresets } from '@/lib/rate-limit';
-import { randomBytes } from 'crypto';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
-    // Rate limiting: 3 free downloads per hour per IP
-    const rateLimitResult = checkRateLimit(request, RateLimitPresets.freeDownload);
-    if (rateLimitResult) {
-      return rateLimitResult;
-    }
-
     const body = await request.json();
     const { email, patternId } = body;
 
@@ -61,9 +53,8 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (existingDownload) {
-      // Use generic error to prevent user enumeration, but still be helpful
       return NextResponse.json(
-        { error: 'Unable to process request. Please check your email for previous downloads.' },
+        { error: 'You have already downloaded this free pattern. Check your email!' },
         { status: 400 }
       );
     }
@@ -99,12 +90,8 @@ export async function POST(request: NextRequest) {
       // Don't fail the request if Mailerlite sync fails - we still have the email in Supabase
     }
 
-    // Generate unique download token using cryptographically secure random bytes
-    const downloadToken = randomBytes(32).toString('hex');
-
-    // Set token expiration to 30 days from now
-    const tokenExpiration = new Date();
-    tokenExpiration.setDate(tokenExpiration.getDate() + 30);
+    // Generate unique download token
+    const downloadToken = `${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
 
     // Create download record
     const { error: downloadError } = await supabase
@@ -115,7 +102,6 @@ export async function POST(request: NextRequest) {
           pattern_id: patternId,
           is_free: true,
           download_token: downloadToken,
-          token_expires_at: tokenExpiration.toISOString(),
         },
       ]);
 

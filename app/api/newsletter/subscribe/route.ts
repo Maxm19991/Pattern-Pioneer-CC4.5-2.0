@@ -1,18 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseClient } from '@/lib/supabase';
 import { addSubscriberToMailerlite } from '@/lib/mailerlite';
-import { checkRateLimit, RateLimitPresets } from '@/lib/rate-limit';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
-    // Rate limiting: 5 subscriptions per hour per IP
-    const rateLimitResult = checkRateLimit(req, RateLimitPresets.newsletter);
-    if (rateLimitResult) {
-      return rateLimitResult;
-    }
-
     const body = await req.json();
     const { email } = body;
 
@@ -42,11 +35,10 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (existingSubscription) {
-      // Use generic success message to prevent user enumeration
-      return NextResponse.json({
-        success: true,
-        message: 'Successfully subscribed to newsletter',
-      });
+      return NextResponse.json(
+        { error: 'This email is already subscribed' },
+        { status: 400 }
+      );
     }
 
     // Add to Supabase

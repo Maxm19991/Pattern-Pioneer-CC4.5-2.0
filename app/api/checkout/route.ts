@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { auth } from '@/auth';
-import { checkRateLimit, RateLimitPresets } from '@/lib/rate-limit';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,15 +18,6 @@ export async function POST(req: NextRequest) {
         { error: 'Authentication required' },
         { status: 401 }
       );
-    }
-
-    // Rate limiting: 10 checkout attempts per hour per user
-    const rateLimitResult = checkRateLimit(req, {
-      ...RateLimitPresets.checkout,
-      identifier: `checkout:${session.user.email}`,
-    });
-    if (rateLimitResult) {
-      return rateLimitResult;
     }
 
     const { items } = await req.json();
