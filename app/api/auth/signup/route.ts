@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseClient } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 import bcrypt from 'bcryptjs';
 
 export const dynamic = 'force-dynamic';
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const supabase = getSupabaseClient();
+    const supabase = getSupabaseAdmin();
 
     // Check if user already exists
     const { data: existingUser } = await supabase
