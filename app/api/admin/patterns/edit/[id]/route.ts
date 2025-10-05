@@ -42,14 +42,9 @@ export async function PUT(
       return NextResponse.json({ error: 'Pattern not found' }, { status: 404 });
     }
 
-    // Parse form data
-    const formData = await req.formData();
-    const name = formData.get('name') as string;
-    const category = formData.get('category') as string;
-    const description = formData.get('description') as string;
-    const price = formData.get('price') as string;
-    const previewFile = formData.get('preview') as File | null;
-    const fullFile = formData.get('full') as File | null;
+    // Parse JSON body (files uploaded client-side to Supabase)
+    const body = await req.json();
+    const { name, category, description, price, newImageUrl, newPreviewFileName, newFullFileName } = body;
 
     // Validate required fields
     if (!name || !price) {
@@ -82,75 +77,29 @@ export async function PUT(
       }
     }
 
-    // Upload new preview image if provided
-    if (previewFile && previewFile.size > 0) {
-      const previewFileName = `${slug}.png`;
+    // Update image URL if new preview was uploaded
+    if (newImageUrl) {
+      imageUrl = newImageUrl;
 
-      // Delete old preview if different filename (also remove old WEBP if exists)
-      if (existingPattern.slug !== slug) {
+      // Delete old preview if slug changed
+      if (existingPattern.slug !== slug && newPreviewFileName) {
         await supabase.storage
           .from('pattern-previews')
           .remove([`${existingPattern.slug}.png`, `${existingPattern.slug}.webp`]);
       }
-
-      const previewBuffer = await previewFile.arrayBuffer();
-      const { error: previewError } = await supabase.storage
-        .from('pattern-previews')
-        .upload(previewFileName, previewBuffer, {
-          contentType: 'image/png',
-          cacheControl: '3600',
-          upsert: true,
-        });
-
-      if (previewError) {
-        console.error('Preview upload error:', previewError);
-        return NextResponse.json(
-          { error: 'Failed to upload preview image' },
-          { status: 500 }
-        );
-      }
-
-      // Get new public URL
-      const { data: previewUrlData } = supabase.storage
-        .from('pattern-previews')
-        .getPublicUrl(previewFileName);
-
-      imageUrl = previewUrlData.publicUrl;
     }
 
-    // Upload new full resolution image if provided
-    if (fullFile && fullFile.size > 0) {
-      const fullFileName = `${name}.png`;
-
-      // Delete old full image if name changed
-      if (name !== existingPattern.name) {
-        await supabase.storage
-          .from('patterns')
-          .remove([`premium/${existingPattern.name}.png`]);
-      }
-
-      const fullBuffer = await fullFile.arrayBuffer();
-      const { error: fullError } = await supabase.storage
+    // Delete old full image if name changed and new file was uploaded
+    if (newFullFileName && name !== existingPattern.name) {
+      await supabase.storage
         .from('patterns')
-        .upload(`premium/${fullFileName}`, fullBuffer, {
-          contentType: 'image/png',
-          cacheControl: '3600',
-          upsert: true,
-        });
-
-      if (fullError) {
-        console.error('Full image upload error:', fullError);
-        return NextResponse.json(
-          { error: 'Failed to upload full resolution image' },
-          { status: 500 }
-        );
-      }
+        .remove([`premium/${existingPattern.name}.png`]);
     }
 
     // Update Stripe product if price changed or name changed
     if (
       existingPattern.stripe_product_id &&
-      (parseFloat(price) !== parseFloat(existingPattern.price) ||
+      (price !== parseFloat(existingPattern.price) ||
         name !== existingPattern.name)
     ) {
       try {
@@ -163,11 +112,11 @@ export async function PUT(
         }
 
         // Create new price if price changed
-        if (parseFloat(price) !== parseFloat(existingPattern.price)) {
+        if (price !== parseFloat(existingPattern.price)) {
           const newPrice = await stripe.prices.create({
             product: existingPattern.stripe_product_id,
             currency: 'eur',
-            unit_amount: Math.round(parseFloat(price) * 100),
+            unit_amount: Math.round(price * 100),
           });
 
           // Update product default price
@@ -202,7 +151,7 @@ export async function PUT(
         slug,
         description: description || null,
         category: category || null,
-        price: parseFloat(price),
+        price: price,
         image_url: imageUrl,
         free_image_url: imageUrl,
       })

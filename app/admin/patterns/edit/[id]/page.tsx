@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { uploadFileToSupabase } from '@/lib/supabase-browser';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,6 +10,7 @@ export default function PatternEditPage({ params }: { params: { id: string } }) 
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [pattern, setPattern] = useState<any>(null);
@@ -35,33 +37,85 @@ export default function PatternEditPage({ params }: { params: { id: string } }) 
     e.preventDefault();
     setSaving(true);
     setError('');
+    setUploadProgress('Preparing update...');
 
     try {
       const formData = new FormData(e.currentTarget);
+      const name = formData.get('name') as string;
+      const category = formData.get('category') as string;
+      const description = formData.get('description') as string;
+      const price = formData.get('price') as string;
+      const previewFile = formData.get('preview') as File | null;
+      const fullFile = formData.get('full') as File | null;
 
-      const response = await fetch(`/api/admin/patterns/edit/${params.id}`, {
-        method: 'PUT',
-        body: formData,
-      });
+      let newImageUrl: string | undefined;
+      let newPreviewFileName: string | undefined;
+      let newFullFileName: string | undefined;
 
-      // Handle non-JSON responses (like 413 errors)
-      let data;
-      const contentType = response.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
-        data = await response.json();
-      } else {
-        const text = await response.text();
-        data = { error: text || 'Update failed' };
+      // Upload new low resolution image if provided
+      if (previewFile && previewFile.size > 0) {
+        setUploadProgress('Uploading low resolution image...');
+        const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        const previewFileName = `${slug}.png`;
+
+        const previewResult = await uploadFileToSupabase(
+          'pattern-previews',
+          previewFileName,
+          previewFile
+        );
+
+        if (previewResult.error) {
+          throw new Error(`Failed to upload low resolution image: ${previewResult.error}`);
+        }
+
+        newImageUrl = previewResult.url;
+        newPreviewFileName = previewFileName;
       }
 
-      if (!response.ok) {
-        if (response.status === 413) {
-          throw new Error('File too large. Low resolution images should be 1024×1024 PNG (max 10MB), full images 4096×4096 PNG (max 50MB)');
+      // Upload new full resolution image if provided
+      if (fullFile && fullFile.size > 0) {
+        setUploadProgress('Uploading full resolution image...');
+        const fullFileName = `${name}.png`;
+
+        const fullResult = await uploadFileToSupabase(
+          'patterns',
+          `premium/${fullFileName}`,
+          fullFile
+        );
+
+        if (fullResult.error) {
+          throw new Error(`Failed to upload full resolution image: ${fullResult.error}`);
         }
+
+        newFullFileName = fullFileName;
+      }
+
+      // Send metadata to API
+      setUploadProgress('Updating pattern record...');
+      const response = await fetch(`/api/admin/patterns/edit/${params.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          category,
+          description,
+          price: parseFloat(price),
+          newImageUrl,
+          newPreviewFileName,
+          newFullFileName,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
         throw new Error(data.error || 'Update failed');
       }
 
       setSuccess(true);
+      setUploadProgress('Success!');
       setTimeout(() => {
         router.push('/admin/patterns');
       }, 2000);
@@ -69,6 +123,7 @@ export default function PatternEditPage({ params }: { params: { id: string } }) 
       console.error('Update error:', err);
       setError(err.message || 'Update failed');
       setSaving(false);
+      setUploadProgress('');
     }
   };
 
@@ -228,7 +283,7 @@ export default function PatternEditPage({ params }: { params: { id: string } }) 
               disabled={saving}
               className="bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
-              {saving ? 'Saving...' : 'Save Changes'}
+              {uploadProgress || (saving ? 'Saving...' : 'Save Changes')}
             </button>
             <a
               href="/admin/patterns"
@@ -237,6 +292,13 @@ export default function PatternEditPage({ params }: { params: { id: string } }) 
               Cancel
             </a>
           </div>
+
+          {/* Upload Progress */}
+          {saving && uploadProgress && (
+            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm text-blue-900">{uploadProgress}</p>
+            </div>
+          )}
 
           {/* Error Message */}
           {error && (

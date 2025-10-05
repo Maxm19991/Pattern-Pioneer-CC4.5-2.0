@@ -28,25 +28,17 @@ export async function POST(req: NextRequest) {
 
     const supabase = getSupabaseAdmin();
 
-    // Parse form data
-    const formData = await req.formData();
-    const name = formData.get('name') as string;
-    const category = formData.get('category') as string;
-    const description = formData.get('description') as string;
-    const price = formData.get('price') as string;
-    const previewFile = formData.get('preview') as File;
-    const fullFile = formData.get('full') as File;
+    // Parse JSON body (files uploaded client-side to Supabase)
+    const body = await req.json();
+    const { name, slug, category, description, price, imageUrl, previewFileName, fullFileName } = body;
 
     // Validate required fields
-    if (!name || !price || !previewFile || !fullFile) {
+    if (!name || !slug || !price || !imageUrl || !previewFileName || !fullFileName) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       );
     }
-
-    // Generate slug
-    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
     // Check if slug already exists
     const { data: existing } = await supabase
@@ -62,58 +54,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Upload preview image (1024x1024 PNG) to public bucket
-    const previewFileName = `${slug}.png`;
-    const previewBuffer = await previewFile.arrayBuffer();
-    const { error: previewError } = await supabase.storage
-      .from('pattern-previews')
-      .upload(previewFileName, previewBuffer, {
-        contentType: 'image/png',
-        cacheControl: '3600',
-        upsert: false,
-      });
-
-    if (previewError) {
-      console.error('Preview upload error:', previewError);
-      return NextResponse.json(
-        { error: 'Failed to upload preview image' },
-        { status: 500 }
-      );
-    }
-
-    // Get public URL for preview
-    const { data: previewUrlData } = supabase.storage
-      .from('pattern-previews')
-      .getPublicUrl(previewFileName);
-
-    // Upload full resolution image (4096x4096 PNG) to private bucket
-    const fullFileName = `${name}.png`;
-    const fullBuffer = await fullFile.arrayBuffer();
-    const { error: fullError } = await supabase.storage
-      .from('patterns')
-      .upload(`premium/${fullFileName}`, fullBuffer, {
-        contentType: 'image/png',
-        cacheControl: '3600',
-        upsert: false,
-      });
-
-    if (fullError) {
-      console.error('Full image upload error:', fullError);
-      // Clean up preview image
-      await supabase.storage.from('pattern-previews').remove([previewFileName]);
-      return NextResponse.json(
-        { error: 'Failed to upload full resolution image' },
-        { status: 500 }
-      );
-    }
-
     // Create Stripe product
     const stripeProduct = await stripe.products.create({
       name: name,
       description: description || undefined,
       default_price_data: {
         currency: 'eur',
-        unit_amount: Math.round(parseFloat(price) * 100),
+        unit_amount: Math.round(price * 100),
       },
       metadata: {
         slug: slug,
@@ -130,9 +77,9 @@ export async function POST(req: NextRequest) {
           slug,
           description: description || null,
           category: category || null,
-          price: parseFloat(price),
-          image_url: previewUrlData.publicUrl,
-          free_image_url: previewUrlData.publicUrl,
+          price: price,
+          image_url: imageUrl,
+          free_image_url: imageUrl,
           stripe_product_id: stripeProduct.id,
           stripe_price_id: stripeProduct.default_price as string,
         },
