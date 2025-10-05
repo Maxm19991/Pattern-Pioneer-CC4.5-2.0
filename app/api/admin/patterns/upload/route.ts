@@ -80,6 +80,7 @@ export async function POST(req: NextRequest) {
           price: price,
           image_url: imageUrl,
           free_image_url: imageUrl,
+          is_active: true,
           stripe_product_id: stripeProduct.id,
           stripe_price_id: stripeProduct.default_price as string,
         },
