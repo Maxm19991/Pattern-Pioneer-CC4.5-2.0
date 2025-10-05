@@ -56,7 +56,7 @@ export default function PatternEditPage({ params }: { params: { id: string } }) 
 
       if (!response.ok) {
         if (response.status === 413) {
-          throw new Error('File too large. Preview images should be 1024×1024 PNG (max 10MB), full images 4096×4096 PNG (max 50MB)');
+          throw new Error('File too large. Low resolution images should be 1024×1024 PNG (max 10MB), full images 4096×4096 PNG (max 50MB)');
         }
         throw new Error(data.error || 'Update failed');
       }
@@ -171,21 +171,28 @@ export default function PatternEditPage({ params }: { params: { id: string } }) 
             />
           </div>
 
-          {/* Preview Image (Optional) */}
+          {/* Low Resolution Image (Optional) */}
           <div>
             <label htmlFor="preview" className="block text-sm font-medium text-gray-700 mb-2">
-              Preview Image (1024×1024 PNG) - Optional
+              Low Resolution Image (1024×1024 PNG) - Optional
             </label>
+            {pattern.free_image_url && (
+              <p className="text-xs text-green-600 mb-1">
+                ✓ Low resolution image currently uploaded
+              </p>
+            )}
             <input
               type="file"
               id="preview"
               name="preview"
               accept="image/png"
               disabled={saving}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 disabled:bg-gray-100"
+              className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 disabled:bg-gray-100 ${
+                pattern.free_image_url ? 'bg-green-500 bg-opacity-30' : ''
+              }`}
             />
             <p className="text-xs text-gray-500 mt-1">
-              Leave empty to keep existing preview image (free download)
+              Leave empty to keep existing low resolution image (free download)
             </p>
           </div>
 
@@ -194,13 +201,20 @@ export default function PatternEditPage({ params }: { params: { id: string } }) 
             <label htmlFor="full" className="block text-sm font-medium text-gray-700 mb-2">
               Full Resolution Image (4096×4096 PNG) - Optional
             </label>
+            {pattern.name && (
+              <p className="text-xs text-green-600 mb-1">
+                ✓ Full resolution image currently uploaded
+              </p>
+            )}
             <input
               type="file"
               id="full"
               name="full"
               accept="image/png"
               disabled={saving}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 disabled:bg-gray-100"
+              className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 disabled:bg-gray-100 ${
+                pattern.name ? 'bg-green-500 bg-opacity-30' : ''
+              }`}
             />
             <p className="text-xs text-gray-500 mt-1">
               Leave empty to keep existing full resolution image

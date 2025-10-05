@@ -36,7 +36,7 @@ export default function PatternUploadPage() {
 
       if (!response.ok) {
         if (response.status === 413) {
-          throw new Error('File too large. Preview images should be 1024×1024 PNG (max 10MB), full images 4096×4096 PNG (max 50MB)');
+          throw new Error('File too large. Low resolution images should be 1024×1024 PNG (max 10MB), full images 4096×4096 PNG (max 50MB)');
         }
         throw new Error(data.error || 'Upload failed');
       }
@@ -126,10 +126,10 @@ export default function PatternUploadPage() {
             />
           </div>
 
-          {/* Preview Image (1024x1024) */}
+          {/* Low Resolution Image (1024x1024) */}
           <div>
             <label htmlFor="preview" className="block text-sm font-medium text-gray-700 mb-2">
-              Preview Image (1024×1024 PNG)
+              Low Resolution Image (1024×1024 PNG)
             </label>
             <input
               type="file"
@@ -141,7 +141,7 @@ export default function PatternUploadPage() {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 disabled:bg-gray-100"
             />
             <p className="text-xs text-gray-500 mt-1">
-              Upload the 1024×1024 preview version (free download)
+              Upload the 1024×1024 low resolution version (free download)
             </p>
           </div>
 
@@ -201,7 +201,7 @@ export default function PatternUploadPage() {
 
       <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
         <p className="text-sm text-blue-900">
-          <strong>Instructions:</strong> Fill in all required fields, upload both the preview (1024×1024 PNG)
+          <strong>Instructions:</strong> Fill in all required fields, upload both the low resolution (1024×1024 PNG)
           and full resolution (4096×4096 PNG) images. The pattern will be automatically added to the database
           and a Stripe product will be created.
         </p>
