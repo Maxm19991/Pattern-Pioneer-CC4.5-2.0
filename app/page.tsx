@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import Navigation from "@/components/Navigation";
+import NewsletterSignup from "@/components/NewsletterSignup";
 import { getPatterns } from "@/lib/data/patterns";
 
 export default async function Home() {
@@ -55,28 +56,7 @@ export default async function Home() {
         </div>
 
         {/* Newsletter Section */}
-        <div id="newsletter" className="max-w-md mx-auto border border-gray-200 p-8 rounded-lg">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2 text-center">
-            Get 4 New Patterns Weekly
-          </h2>
-          <p className="text-gray-600 mb-6 text-center">
-            Join our newsletter for updates on new pattern releases
-          </p>
-          <form className="flex flex-col sm:flex-row gap-2">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-900"
-              required
-            />
-            <button
-              type="submit"
-              className="bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition whitespace-nowrap"
-            >
-              Subscribe
-            </button>
-          </form>
-        </div>
+        <NewsletterSignup />
       </main>
 
       {/* Footer */}
