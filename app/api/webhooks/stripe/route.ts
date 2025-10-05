@@ -3,6 +3,8 @@ import Stripe from 'stripe';
 import { getSupabaseClient } from '@/lib/supabase';
 import { resend } from '@/lib/resend';
 import { OrderConfirmationEmail } from '@/emails/OrderConfirmation';
+import { logError } from '@/lib/error-handling';
+import { addCredits } from '@/lib/credits';
 
 export const dynamic = 'force-dynamic';
 
@@ -29,9 +31,9 @@ export async function POST(req: NextRequest) {
   try {
     event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
   } catch (err: any) {
-    console.error('Webhook signature verification failed:', err.message);
+    logError('Webhook signature verification', err);
     return NextResponse.json(
-      { error: `Webhook Error: ${err.message}` },
+      { error: 'Webhook signature verification failed' },
       { status: 400 }
     );
   }
@@ -41,6 +43,27 @@ export async function POST(req: NextRequest) {
     case 'checkout.session.completed':
       const session = event.data.object as Stripe.Checkout.Session;
       await handleCheckoutSessionCompleted(session, supabase);
+      break;
+
+    case 'customer.subscription.created':
+    case 'customer.subscription.updated':
+      const subscription = event.data.object as Stripe.Subscription;
+      await handleSubscriptionUpdate(subscription, supabase);
+      break;
+
+    case 'customer.subscription.deleted':
+      const deletedSubscription = event.data.object as Stripe.Subscription;
+      await handleSubscriptionDeleted(deletedSubscription, supabase);
+      break;
+
+    case 'invoice.payment_succeeded':
+      const invoice = event.data.object as Stripe.Invoice;
+      await handleInvoicePaymentSucceeded(invoice, supabase);
+      break;
+
+    case 'invoice.payment_failed':
+      const failedInvoice = event.data.object as Stripe.Invoice;
+      await handleInvoicePaymentFailed(failedInvoice, supabase);
       break;
 
     default:
@@ -92,7 +115,7 @@ async function handleCheckoutSessionCompleted(
         .single();
 
       if (userError) {
-        console.error('Error creating user:', userError);
+        logError('Webhook user creation', userError);
       } else {
         userId = newUser?.id;
       }
@@ -116,7 +139,7 @@ async function handleCheckoutSessionCompleted(
       .single();
 
     if (orderError) {
-      console.error('Error creating order:', orderError);
+      logError('Webhook order creation', orderError);
       return;
     }
 
@@ -151,7 +174,7 @@ async function handleCheckoutSessionCompleted(
         ]);
 
       if (itemError) {
-        console.error('Error creating order item:', itemError);
+        logError('Webhook order item creation', itemError);
       }
 
       // Create download record (grants access)
@@ -169,7 +192,7 @@ async function handleCheckoutSessionCompleted(
           ]);
 
         if (downloadError) {
-          console.error('Error creating download record:', downloadError);
+          logError('Webhook download record creation', downloadError);
         }
 
         // Add to email items
@@ -204,12 +227,185 @@ async function handleCheckoutSessionCompleted(
 
       console.log('Order confirmation email sent to:', email);
     } catch (emailError) {
-      console.error('Failed to send order confirmation email:', emailError);
+      logError('Webhook order confirmation email', emailError);
       // Don't fail the webhook if email fails
     }
 
     console.log('Checkout session processed successfully');
   } catch (error) {
-    console.error('Error handling checkout session:', error);
+    logError('Webhook checkout session handler', error);
+  }
+}
+
+async function handleSubscriptionUpdate(
+  subscription: Stripe.Subscription,
+  supabase: ReturnType<typeof getSupabaseClient>
+) {
+  try {
+    console.log('Processing subscription update:', subscription.id);
+
+    const customerId = subscription.customer as string;
+    const priceId = subscription.items.data[0]?.price.id;
+
+    // Determine plan type from price metadata or ID
+    const price = subscription.items.data[0]?.price;
+    const planType = price?.recurring?.interval === 'year' ? 'yearly' : 'monthly';
+
+    // Get user by stripe customer ID
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('id')
+      .eq('stripe_customer_id', customerId)
+      .single();
+
+    if (userError || !user) {
+      console.error('User not found for customer:', customerId);
+      return;
+    }
+
+    // Upsert subscription
+    const { error: subscriptionError } = await supabase
+      .from('subscriptions')
+      .upsert(
+        {
+          user_id: user.id,
+          stripe_customer_id: customerId,
+          stripe_subscription_id: subscription.id,
+          stripe_price_id: priceId,
+          plan_type: planType,
+          status: subscription.status,
+          current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
+          current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+          cancel_at_period_end: subscription.cancel_at_period_end,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'stripe_subscription_id' }
+      );
+
+    if (subscriptionError) {
+      logError('Webhook subscription upsert', subscriptionError);
+    }
+
+    console.log('Subscription updated successfully');
+  } catch (error) {
+    logError('Webhook subscription update handler', error);
+  }
+}
+
+async function handleSubscriptionDeleted(
+  subscription: Stripe.Subscription,
+  supabase: ReturnType<typeof getSupabaseClient>
+) {
+  try {
+    console.log('Processing subscription deletion:', subscription.id);
+
+    // Update subscription status to canceled
+    const { error } = await supabase
+      .from('subscriptions')
+      .update({
+        status: 'canceled',
+        updated_at: new Date().toISOString(),
+      })
+      .eq('stripe_subscription_id', subscription.id);
+
+    if (error) {
+      logError('Webhook subscription deletion', error);
+    }
+
+    console.log('Subscription deleted successfully');
+  } catch (error) {
+    logError('Webhook subscription deletion handler', error);
+  }
+}
+
+async function handleInvoicePaymentSucceeded(
+  invoice: Stripe.Invoice,
+  supabase: ReturnType<typeof getSupabaseClient>
+) {
+  try {
+    console.log('Processing successful invoice payment:', invoice.id);
+
+    // Only process subscription invoices (not one-time payments)
+    if (!invoice.subscription) {
+      console.log('Not a subscription invoice, skipping');
+      return;
+    }
+
+    const customerId = invoice.customer as string;
+
+    // Get user by stripe customer ID
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('id')
+      .eq('stripe_customer_id', customerId)
+      .single();
+
+    if (userError || !user) {
+      console.error('User not found for customer:', customerId);
+      return;
+    }
+
+    // Get subscription details
+    const { data: subscription, error: subError } = await supabase
+      .from('subscriptions')
+      .select('*')
+      .eq('stripe_subscription_id', invoice.subscription as string)
+      .single();
+
+    if (subError || !subscription) {
+      console.error('Subscription not found:', invoice.subscription);
+      return;
+    }
+
+    // Add 12 credits for successful payment (both monthly and yearly get 12 credits per billing cycle)
+    const creditsToAdd = 12;
+    const result = await addCredits(
+      user.id,
+      creditsToAdd,
+      'subscription_renewal',
+      `${creditsToAdd} credits added for ${subscription.plan_type} subscription renewal`,
+      subscription.id
+    );
+
+    if (result) {
+      console.log(`Added ${creditsToAdd} credits to user ${user.id}`);
+    } else {
+      console.error('Failed to add credits');
+    }
+
+    console.log('Invoice payment processed successfully');
+  } catch (error) {
+    logError('Webhook invoice payment succeeded handler', error);
+  }
+}
+
+async function handleInvoicePaymentFailed(
+  invoice: Stripe.Invoice,
+  supabase: ReturnType<typeof getSupabaseClient>
+) {
+  try {
+    console.log('Processing failed invoice payment:', invoice.id);
+
+    // Only process subscription invoices
+    if (!invoice.subscription) {
+      return;
+    }
+
+    // Update subscription status to past_due
+    const { error } = await supabase
+      .from('subscriptions')
+      .update({
+        status: 'past_due',
+        updated_at: new Date().toISOString(),
+      })
+      .eq('stripe_subscription_id', invoice.subscription as string);
+
+    if (error) {
+      logError('Webhook invoice payment failed', error);
+    }
+
+    console.log('Subscription marked as past_due');
+  } catch (error) {
+    logError('Webhook invoice payment failed handler', error);
   }
 }

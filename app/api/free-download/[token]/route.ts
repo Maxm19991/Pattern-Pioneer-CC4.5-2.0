@@ -19,7 +19,7 @@ export async function GET(
     // Find the download record with this token
     const { data: download, error: downloadError } = await supabase
       .from('downloads')
-      .select('id, email, pattern_id, is_free, download_token, patterns(name, slug, free_image_url)')
+      .select('id, email, pattern_id, is_free, download_token, token_expires_at, patterns(name, slug, free_image_url)')
       .eq('download_token', token)
       .eq('is_free', true)
       .single();
@@ -29,6 +29,18 @@ export async function GET(
         { error: 'Download link not found or expired' },
         { status: 404 }
       );
+    }
+
+    // Check if token has expired
+    if (download.token_expires_at) {
+      const expirationDate = new Date(download.token_expires_at);
+      const now = new Date();
+      if (now > expirationDate) {
+        return NextResponse.json(
+          { error: 'Download link has expired. Please request a new download link.' },
+          { status: 410 }
+        );
+      }
     }
 
     // Get the pattern data

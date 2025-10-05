@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import { getSupabaseClient } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 import { redirect } from 'next/navigation';
 
 export async function requireAdmin() {
@@ -9,7 +9,7 @@ export async function requireAdmin() {
     redirect('/auth/signin');
   }
 
-  const supabase = getSupabaseClient();
+  const supabase = getSupabaseAdmin();
   const { data: user } = await supabase
     .from('users')
     .select('is_admin')
@@ -24,7 +24,7 @@ export async function requireAdmin() {
 }
 
 export async function isAdmin(email: string): Promise<boolean> {
-  const supabase = getSupabaseClient();
+  const supabase = getSupabaseAdmin();
   const { data: user } = await supabase
     .from('users')
     .select('is_admin')

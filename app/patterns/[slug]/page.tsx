@@ -3,10 +3,12 @@ import Navigation from "@/components/Navigation";
 import AddToCartButton from "@/components/AddToCartButton";
 import FavoriteButton from "@/components/FavoriteButton";
 import FreeDownloadForm from "@/components/FreeDownloadForm";
+import UseCreditButton from "@/components/UseCreditButton";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { getSupabaseClient } from "@/lib/supabase";
+import { getAvailableCredits } from "@/lib/credits";
 import Link from "next/link";
 
 interface PatternPageProps {
@@ -35,8 +37,10 @@ export default async function PatternPage({ params }: PatternPageProps) {
   const session = await auth();
   let userOwnsPattern = false;
   let isFavorited = false;
+  let hasSubscription = false;
+  let availableCredits = 0;
 
-  if (session?.user?.email) {
+  if (session?.user?.email && session?.user?.id) {
     const supabase = getSupabaseClient();
 
     // Check ownership
@@ -58,6 +62,21 @@ export default async function PatternPage({ params }: PatternPageProps) {
       .single();
 
     isFavorited = !!favorite;
+
+    // Check subscription status
+    const { data: subscription } = await supabase
+      .from('subscriptions')
+      .select('*')
+      .eq('user_id', session.user.id)
+      .in('status', ['active', 'trialing'])
+      .single();
+
+    hasSubscription = !!subscription;
+
+    // Get available credits
+    if (hasSubscription) {
+      availableCredits = await getAvailableCredits(session.user.id);
+    }
   }
 
   return (
@@ -113,7 +132,32 @@ export default async function PatternPage({ params }: PatternPageProps) {
                   Already Purchased - View Downloads
                 </Link>
               ) : (
-                <AddToCartButton pattern={pattern} />
+                <div className="space-y-3">
+                  {/* Credit Purchase Option (for subscribers) */}
+                  {session?.user && (
+                    <UseCreditButton
+                      patternId={pattern.id}
+                      patternName={pattern.name}
+                      availableCredits={availableCredits}
+                      hasSubscription={hasSubscription}
+                    />
+                  )}
+
+                  {/* Divider */}
+                  {session?.user && hasSubscription && (
+                    <div className="relative">
+                      <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-gray-300"></div>
+                      </div>
+                      <div className="relative flex justify-center text-sm">
+                        <span className="px-2 bg-white text-gray-500">or</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* One-time Purchase */}
+                  <AddToCartButton pattern={pattern} />
+                </div>
               )}
 
               <FreeDownloadForm patternId={pattern.id} patternName={pattern.name} />

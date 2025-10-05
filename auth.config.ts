@@ -7,11 +7,24 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
+      const isAdmin = !!(auth?.user as any)?.isAdmin;
       const isOnAccount = nextUrl.pathname.startsWith('/account');
+      const isOnAdmin = nextUrl.pathname.startsWith('/admin');
 
+      // Admin routes require admin role
+      if (isOnAdmin) {
+        if (!isLoggedIn || !isAdmin) {
+          return false; // Redirect non-admin users
+        }
+        return true;
+      }
+
+      // Account routes require authentication
       if (isOnAccount) {
-        if (isLoggedIn) return true;
-        return false; // Redirect unauthenticated users to login page
+        if (!isLoggedIn) {
+          return false; // Redirect unauthenticated users to login page
+        }
+        return true;
       }
 
       return true;
