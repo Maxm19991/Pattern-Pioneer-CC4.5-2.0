@@ -14,6 +14,7 @@ export async function getPatterns(): Promise<Pattern[]> {
     return [];
   }
 
+  console.log('Fetched patterns:', data?.length || 0);
   return data as Pattern[];
 }
 
