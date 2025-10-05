@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { Subscription, CreditTransaction } from '@/lib/types';
 
@@ -11,7 +11,7 @@ interface SubscriptionStatus {
   expiringCredits: { amount: number; expiresAt: string }[];
 }
 
-export default function SubscriptionPage() {
+function SubscriptionPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<SubscriptionStatus | null>(null);
@@ -356,5 +356,22 @@ export default function SubscriptionPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function SubscriptionPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="container mx-auto px-4 py-12">
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-3xl font-bold mb-8">Subscription</h1>
+            <p>Loading...</p>
+          </div>
+        </div>
+      }
+    >
+      <SubscriptionPageContent />
+    </Suspense>
   );
 }
