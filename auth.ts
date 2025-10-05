@@ -2,7 +2,7 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { SupabaseAdapter } from '@auth/supabase-adapter';
 import { authConfig } from './auth.config';
-import { getSupabaseClient } from './lib/supabase';
+import { getSupabaseAdmin } from './lib/supabase';
 import bcrypt from 'bcryptjs';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -23,7 +23,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const email = credentials.email as string;
         const password = credentials.password as string;
 
-        const supabase = getSupabaseClient();
+        const supabase = getSupabaseAdmin();
 
         // Check if user exists
         const { data: user, error } = await supabase
