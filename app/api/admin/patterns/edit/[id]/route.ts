@@ -6,6 +6,9 @@ import Stripe from 'stripe';
 
 export const dynamic = 'force-dynamic';
 
+// Increase body size limit for image uploads (10MB)
+export const runtime = 'nodejs';
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-09-30.clover' as any,
 });

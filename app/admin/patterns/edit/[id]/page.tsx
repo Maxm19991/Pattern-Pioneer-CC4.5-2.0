@@ -44,9 +44,20 @@ export default function PatternEditPage({ params }: { params: { id: string } }) 
         body: formData,
       });
 
-      const data = await response.json();
+      // Handle non-JSON responses (like 413 errors)
+      let data;
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        data = await response.json();
+      } else {
+        const text = await response.text();
+        data = { error: text || 'Update failed' };
+      }
 
       if (!response.ok) {
+        if (response.status === 413) {
+          throw new Error('File too large. Preview images should be 1024×1024 PNG (max 2MB), full images 4096×4096 PNG (max 10MB)');
+        }
         throw new Error(data.error || 'Update failed');
       }
 
