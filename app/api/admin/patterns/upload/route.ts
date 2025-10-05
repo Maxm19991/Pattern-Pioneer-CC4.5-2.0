@@ -6,7 +6,7 @@ import Stripe from 'stripe';
 
 export const dynamic = 'force-dynamic';
 
-// Increase body size limit for image uploads (10MB)
+// Increase body size limit for image uploads (50MB for full resolution)
 export const runtime = 'nodejs';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
