@@ -114,7 +114,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Send email with free download link
-    const downloadUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/download/${downloadToken}`;
+    const downloadUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/free-download/${downloadToken}`;
 
     try {
       await resend.emails.send({
