@@ -14,16 +14,47 @@ export default function PatternEditPage({ params }: { params: { id: string } }) 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [pattern, setPattern] = useState<any>(null);
+  const [hasLowResImage, setHasLowResImage] = useState(false);
+  const [hasFullResImage, setHasFullResImage] = useState(false);
 
   useEffect(() => {
     // Fetch pattern data
     fetch(`/api/admin/patterns/${params.id}`)
       .then((res) => res.json())
-      .then((data) => {
+      .then(async (data) => {
         if (data.error) {
           setError(data.error);
         } else {
           setPattern(data.pattern);
+
+          // Check if low res image exists
+          if (data.pattern.free_image_url) {
+            try {
+              const response = await fetch(data.pattern.free_image_url, { method: 'HEAD' });
+              setHasLowResImage(response.ok);
+            } catch {
+              setHasLowResImage(false);
+            }
+          }
+
+          // Check if full res image exists in storage
+          // The full res image is stored as: patterns/premium/{name}.png
+          if (data.pattern.name) {
+            try {
+              const checkResponse = await fetch('/api/admin/storage/check', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  bucket: 'patterns',
+                  path: `premium/${data.pattern.name}.png`
+                }),
+              });
+              const checkData = await checkResponse.json();
+              setHasFullResImage(checkData.exists);
+            } catch {
+              setHasFullResImage(false);
+            }
+          }
         }
         setLoading(false);
       })
@@ -231,7 +262,7 @@ export default function PatternEditPage({ params }: { params: { id: string } }) 
             <label htmlFor="preview" className="block text-sm font-medium text-gray-700 mb-2">
               Low Resolution Image (1024×1024 PNG) - Optional
             </label>
-            {pattern.free_image_url && (
+            {hasLowResImage && (
               <p className="text-xs text-green-600 mb-1">
                 ✓ Low resolution image currently uploaded
               </p>
@@ -243,7 +274,7 @@ export default function PatternEditPage({ params }: { params: { id: string } }) 
               accept="image/png"
               disabled={saving}
               className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 disabled:bg-gray-100 ${
-                pattern.free_image_url ? 'bg-green-500 bg-opacity-30' : ''
+                hasLowResImage ? 'bg-green-500 bg-opacity-30' : ''
               }`}
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -256,7 +287,7 @@ export default function PatternEditPage({ params }: { params: { id: string } }) 
             <label htmlFor="full" className="block text-sm font-medium text-gray-700 mb-2">
               Full Resolution Image (4096×4096 PNG) - Optional
             </label>
-            {pattern.name && (
+            {hasFullResImage && (
               <p className="text-xs text-green-600 mb-1">
                 ✓ Full resolution image currently uploaded
               </p>
@@ -268,7 +299,7 @@ export default function PatternEditPage({ params }: { params: { id: string } }) 
               accept="image/png"
               disabled={saving}
               className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 disabled:bg-gray-100 ${
-                pattern.name ? 'bg-green-500 bg-opacity-30' : ''
+                hasFullResImage ? 'bg-green-500 bg-opacity-30' : ''
               }`}
             />
             <p className="text-xs text-gray-500 mt-1">
