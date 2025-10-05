@@ -1,6 +1,11 @@
+'use client';
+
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 export default function Footer() {
+  const { data: session } = useSession();
+
   return (
     <footer className="bg-white border-t border-gray-200 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -34,21 +39,33 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-semibold text-gray-900 mb-4">Account</h4>
             <ul className="space-y-2">
-              <li>
-                <Link href="/auth/signin" className="text-sm text-gray-600 hover:text-gray-900">
-                  Sign In
-                </Link>
-              </li>
-              <li>
-                <Link href="/auth/signup" className="text-sm text-gray-600 hover:text-gray-900">
-                  Create Account
-                </Link>
-              </li>
-              <li>
-                <Link href="/account/downloads" className="text-sm text-gray-600 hover:text-gray-900">
-                  My Downloads
-                </Link>
-              </li>
+              {!session ? (
+                <>
+                  <li>
+                    <Link href="/auth/signin" className="text-sm text-gray-600 hover:text-gray-900">
+                      Sign In
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/auth/signup" className="text-sm text-gray-600 hover:text-gray-900">
+                      Create Account
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <Link href="/account" className="text-sm text-gray-600 hover:text-gray-900">
+                      My Account
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/account/downloads" className="text-sm text-gray-600 hover:text-gray-900">
+                      My Downloads
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
 
