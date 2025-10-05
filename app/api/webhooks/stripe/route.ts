@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
 
 async function handleCheckoutSessionCompleted(
   session: Stripe.Checkout.Session,
-  supabase: ReturnType<typeof getSupabaseClient>
+  supabase: ReturnType<typeof getSupabaseAdmin>
 ) {
   try {
     console.log('Processing checkout session:', session.id);
@@ -239,7 +239,7 @@ async function handleCheckoutSessionCompleted(
 
 async function handleSubscriptionUpdate(
   subscription: Stripe.Subscription,
-  supabase: ReturnType<typeof getSupabaseClient>
+  supabase: ReturnType<typeof getSupabaseAdmin>
 ) {
   try {
     console.log('Processing subscription update:', subscription.id);
@@ -294,7 +294,7 @@ async function handleSubscriptionUpdate(
 
 async function handleSubscriptionDeleted(
   subscription: Stripe.Subscription,
-  supabase: ReturnType<typeof getSupabaseClient>
+  supabase: ReturnType<typeof getSupabaseAdmin>
 ) {
   try {
     console.log('Processing subscription deletion:', subscription.id);
@@ -320,7 +320,7 @@ async function handleSubscriptionDeleted(
 
 async function handleInvoicePaymentSucceeded(
   invoice: Stripe.Invoice,
-  supabase: ReturnType<typeof getSupabaseClient>
+  supabase: ReturnType<typeof getSupabaseAdmin>
 ) {
   try {
     console.log('Processing successful invoice payment:', invoice.id);
@@ -381,7 +381,7 @@ async function handleInvoicePaymentSucceeded(
 
 async function handleInvoicePaymentFailed(
   invoice: Stripe.Invoice,
-  supabase: ReturnType<typeof getSupabaseClient>
+  supabase: ReturnType<typeof getSupabaseAdmin>
 ) {
   try {
     console.log('Processing failed invoice payment:', invoice.id);
