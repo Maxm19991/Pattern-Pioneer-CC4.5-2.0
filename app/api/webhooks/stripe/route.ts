@@ -263,6 +263,12 @@ async function handleSubscriptionUpdate(
       return;
     }
 
+    // Validate dates
+    if (!subscription.current_period_start || !subscription.current_period_end) {
+      console.error('Missing period dates in subscription:', subscription.id);
+      return;
+    }
+
     // Upsert subscription
     const { error: subscriptionError } = await supabase
       .from('subscriptions')
@@ -276,7 +282,7 @@ async function handleSubscriptionUpdate(
           status: subscription.status,
           current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
           current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
-          cancel_at_period_end: subscription.cancel_at_period_end,
+          cancel_at_period_end: subscription.cancel_at_period_end || false,
           updated_at: new Date().toISOString(),
         },
         { onConflict: 'stripe_subscription_id' }
@@ -345,16 +351,44 @@ async function handleInvoicePaymentSucceeded(
       return;
     }
 
-    // Get subscription details
-    const { data: subscription, error: subError } = await supabase
+    // Get subscription details - if not in DB yet, fetch from Stripe
+    let { data: subscription, error: subError } = await supabase
       .from('subscriptions')
       .select('*')
       .eq('stripe_subscription_id', invoice.subscription as string)
       .single();
 
     if (subError || !subscription) {
-      console.error('Subscription not found:', invoice.subscription);
-      return;
+      console.log('Subscription not in DB yet, fetching from Stripe:', invoice.subscription);
+
+      // Fetch subscription from Stripe
+      const stripeSubscription = await stripe.subscriptions.retrieve(invoice.subscription as string);
+      const priceId = stripeSubscription.items.data[0]?.price.id;
+      const planType = stripeSubscription.items.data[0]?.price.recurring?.interval === 'year' ? 'yearly' : 'monthly';
+
+      // Insert subscription into database
+      const { data: newSubscription, error: insertError } = await supabase
+        .from('subscriptions')
+        .insert({
+          user_id: user.id,
+          stripe_customer_id: customerId,
+          stripe_subscription_id: stripeSubscription.id,
+          stripe_price_id: priceId,
+          plan_type: planType,
+          status: stripeSubscription.status,
+          current_period_start: new Date(stripeSubscription.current_period_start * 1000).toISOString(),
+          current_period_end: new Date(stripeSubscription.current_period_end * 1000).toISOString(),
+          cancel_at_period_end: stripeSubscription.cancel_at_period_end || false,
+        })
+        .select()
+        .single();
+
+      if (insertError) {
+        console.error('Failed to create subscription:', insertError);
+        return;
+      }
+
+      subscription = newSubscription;
     }
 
     // Add 12 credits for successful payment (both monthly and yearly get 12 credits per billing cycle)
