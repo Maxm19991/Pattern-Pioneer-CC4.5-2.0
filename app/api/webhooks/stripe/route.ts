@@ -263,9 +263,17 @@ async function handleSubscriptionUpdate(
       console.log('Period dates missing, fetching full subscription from Stripe:', subscription.id);
       subscription = await stripe.subscriptions.retrieve(subscription.id);
 
+      // Log the subscription details for debugging
+      console.log('Subscription status:', subscription.status);
+      console.log('Subscription billing cycle anchor:', subscription.billing_cycle_anchor);
+      console.log('Subscription current_period_start:', subscription.current_period_start);
+      console.log('Subscription current_period_end:', subscription.current_period_end);
+      console.log('Full subscription object:', JSON.stringify(subscription, null, 2));
+
       if (!subscription.current_period_start || !subscription.current_period_end) {
         console.error('Missing period dates even after fetch:', subscription.id);
-        return;
+        // Don't return early - try to use billing_cycle_anchor as fallback
+        console.log('Attempting to use billing_cycle_anchor as fallback');
       }
     }
 
@@ -274,6 +282,12 @@ async function handleSubscriptionUpdate(
     // Determine plan type from price metadata or ID
     const price = subscription.items.data[0]?.price;
     const planType = price?.recurring?.interval === 'year' ? 'yearly' : 'monthly';
+
+    // Use billing_cycle_anchor as fallback for period dates if they're missing
+    const periodStart = subscription.current_period_start || subscription.billing_cycle_anchor || Math.floor(Date.now() / 1000);
+    const periodEnd = subscription.current_period_end || (periodStart + (planType === 'yearly' ? 365 : 30) * 24 * 60 * 60);
+
+    console.log('Using period_start:', periodStart, 'period_end:', periodEnd);
 
     // Upsert subscription
     const { error: subscriptionError } = await supabase
@@ -286,8 +300,8 @@ async function handleSubscriptionUpdate(
           stripe_price_id: priceId,
           plan_type: planType,
           status: subscription.status,
-          current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-          current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+          current_period_start: new Date(periodStart * 1000).toISOString(),
+          current_period_end: new Date(periodEnd * 1000).toISOString(),
           cancel_at_period_end: subscription.cancel_at_period_end || false,
           updated_at: new Date().toISOString(),
         },
