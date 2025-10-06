@@ -245,11 +245,6 @@ async function handleSubscriptionUpdate(
     console.log('Processing subscription update:', subscription.id);
 
     const customerId = subscription.customer as string;
-    const priceId = subscription.items.data[0]?.price.id;
-
-    // Determine plan type from price metadata or ID
-    const price = subscription.items.data[0]?.price;
-    const planType = price?.recurring?.interval === 'year' ? 'yearly' : 'monthly';
 
     // Get user by stripe customer ID
     const { data: user, error: userError } = await supabase
@@ -263,11 +258,22 @@ async function handleSubscriptionUpdate(
       return;
     }
 
-    // Validate dates
+    // Validate dates - if missing, fetch full subscription from Stripe
     if (!subscription.current_period_start || !subscription.current_period_end) {
-      console.error('Missing period dates in subscription:', subscription.id);
-      return;
+      console.log('Period dates missing, fetching full subscription from Stripe:', subscription.id);
+      subscription = await stripe.subscriptions.retrieve(subscription.id);
+
+      if (!subscription.current_period_start || !subscription.current_period_end) {
+        console.error('Missing period dates even after fetch:', subscription.id);
+        return;
+      }
     }
+
+    const priceId = subscription.items.data[0]?.price.id;
+
+    // Determine plan type from price metadata or ID
+    const price = subscription.items.data[0]?.price;
+    const planType = price?.recurring?.interval === 'year' ? 'yearly' : 'monthly';
 
     // Upsert subscription
     const { error: subscriptionError } = await supabase
