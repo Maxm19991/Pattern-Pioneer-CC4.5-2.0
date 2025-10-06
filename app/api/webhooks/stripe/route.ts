@@ -136,7 +136,7 @@ async function handleCheckoutSessionCompleted(
       const result = await addCredits(
         userId!,
         creditsToAdd,
-        'subscription_start',
+        'subscription_renewal',
         `${creditsToAdd} credits added for new subscription`,
         session.subscription as string
       );
