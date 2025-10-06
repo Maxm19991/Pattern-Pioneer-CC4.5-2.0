@@ -132,13 +132,14 @@ async function handleCheckoutSessionCompleted(
       console.log('Subscription checkout detected, adding initial credits');
 
       // Add 12 credits for new subscription
+      // Note: subscription isn't in our DB yet, so pass undefined for subscription_id
       const creditsToAdd = 12;
       const result = await addCredits(
         userId!,
         creditsToAdd,
         'subscription_renewal',
         `${creditsToAdd} credits added for new subscription`,
-        session.subscription as string
+        undefined
       );
 
       if (result) {
