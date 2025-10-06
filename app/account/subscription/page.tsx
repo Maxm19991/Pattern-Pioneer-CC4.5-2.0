@@ -135,7 +135,7 @@ function SubscriptionPageContent() {
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-4 mb-8">
           <button
-            onClick={() => router.back()}
+            onClick={() => success ? router.push('/') : router.back()}
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition"
           >
             <svg
