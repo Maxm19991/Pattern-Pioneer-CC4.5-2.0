@@ -142,7 +142,7 @@ async function handleCheckoutSessionCompleted(
       );
 
       if (result) {
-        console.log(`Added ${creditsToAdd} initial credits to user ${userId}`);
+        console.log(`Added ${creditsToAdd} initial credits to user ${userId}, expires at ${result.expires_at}`);
       } else {
         console.error('Failed to add initial credits');
       }

@@ -60,6 +60,10 @@ export async function addCredits(
 ): Promise<CreditTransaction | null> {
   const supabase = getSupabaseAdmin();
 
+  // Calculate expiration date (90 days from now)
+  const expiresAt = new Date();
+  expiresAt.setDate(expiresAt.getDate() + 90);
+
   const { data, error } = await supabase
     .from('credit_transactions')
     .insert([
@@ -69,6 +73,7 @@ export async function addCredits(
         transaction_type: transactionType,
         description,
         subscription_id: subscriptionId,
+        expires_at: expiresAt.toISOString(),
       },
     ])
     .select()
