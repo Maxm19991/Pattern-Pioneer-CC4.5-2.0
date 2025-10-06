@@ -79,14 +79,7 @@ async function handleCheckoutSessionCompleted(
 ) {
   try {
     console.log('Processing checkout session:', session.id);
-
-    // Get line items from session
-    const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
-      expand: ['data.price.product'],
-    });
-
-    // Calculate total
-    const total = (session.amount_total || 0) / 100; // Convert from cents
+    console.log('Session mode:', session.mode);
 
     // Get customer email
     const email = session.customer_email || session.customer_details?.email;
@@ -98,6 +91,8 @@ async function handleCheckoutSessionCompleted(
 
     // Check if user exists, if not create one
     let userId = null;
+    const customerId = session.customer as string;
+
     const { data: existingUser } = await supabase
       .from('users')
       .select('id')
@@ -106,11 +101,22 @@ async function handleCheckoutSessionCompleted(
 
     if (existingUser) {
       userId = existingUser.id;
+
+      // Update stripe_customer_id if not set
+      if (customerId) {
+        await supabase
+          .from('users')
+          .update({ stripe_customer_id: customerId })
+          .eq('id', userId);
+      }
     } else {
-      // Create user
+      // Create user with stripe_customer_id
       const { data: newUser, error: userError } = await supabase
         .from('users')
-        .insert([{ email }])
+        .insert([{
+          email,
+          stripe_customer_id: customerId
+        }])
         .select('id')
         .single();
 
@@ -120,6 +126,41 @@ async function handleCheckoutSessionCompleted(
         userId = newUser?.id;
       }
     }
+
+    // Handle subscription checkout
+    if (session.mode === 'subscription' && session.subscription) {
+      console.log('Subscription checkout detected, adding initial credits');
+
+      // Add 12 credits for new subscription
+      const creditsToAdd = 12;
+      const result = await addCredits(
+        userId!,
+        creditsToAdd,
+        'subscription_start',
+        `${creditsToAdd} credits added for new subscription`,
+        session.subscription as string
+      );
+
+      if (result) {
+        console.log(`Added ${creditsToAdd} initial credits to user ${userId}`);
+      } else {
+        console.error('Failed to add initial credits');
+      }
+
+      console.log('Subscription checkout processed successfully');
+      return;
+    }
+
+    // Handle pattern purchase checkout
+    console.log('Pattern purchase checkout detected');
+
+    // Get line items from session
+    const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
+      expand: ['data.price.product'],
+    });
+
+    // Calculate total
+    const total = (session.amount_total || 0) / 100; // Convert from cents
 
     // Create order
     const { data: order, error: orderError } = await supabase
