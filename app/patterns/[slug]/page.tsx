@@ -7,7 +7,7 @@ import UseCreditButton from "@/components/UseCreditButton";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
-import { getSupabaseClient } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase";
 import { getAvailableCredits } from "@/lib/credits";
 import Link from "next/link";
 
@@ -41,7 +41,7 @@ export default async function PatternPage({ params }: PatternPageProps) {
   let availableCredits = 0;
 
   if (session?.user?.email && session?.user?.id) {
-    const supabase = getSupabaseClient();
+    const supabase = getSupabaseAdmin();
 
     // Check ownership
     const { data: download } = await supabase
