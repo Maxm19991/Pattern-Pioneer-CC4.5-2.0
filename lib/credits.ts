@@ -1,11 +1,11 @@
-import { getSupabaseClient } from './supabase';
+import { getSupabaseAdmin } from './supabase';
 import type { CreditTransaction, UserCredits } from './types';
 
 /**
  * Get user's available credits (excluding expired credits)
  */
 export async function getAvailableCredits(userId: string): Promise<number> {
-  const supabase = getSupabaseClient();
+  const supabase = getSupabaseAdmin();
 
   // Calculate available credits by summing up non-expired transactions
   const { data, error } = await supabase.rpc('get_available_credits', {
@@ -32,7 +32,7 @@ export async function getAvailableCredits(userId: string): Promise<number> {
  * Note: This may include expired credits. Use getAvailableCredits() for accurate balance.
  */
 export async function getUserCredits(userId: string): Promise<UserCredits | null> {
-  const supabase = getSupabaseClient();
+  const supabase = getSupabaseAdmin();
 
   const { data, error } = await supabase
     .from('user_credits')
@@ -58,7 +58,7 @@ export async function addCredits(
   description?: string,
   subscriptionId?: string
 ): Promise<CreditTransaction | null> {
-  const supabase = getSupabaseClient();
+  const supabase = getSupabaseAdmin();
 
   const { data, error } = await supabase
     .from('credit_transactions')
@@ -92,7 +92,7 @@ export async function spendCredits(
   patternId: string,
   description?: string
 ): Promise<{ success: boolean; error?: string; transaction?: CreditTransaction }> {
-  const supabase = getSupabaseClient();
+  const supabase = getSupabaseAdmin();
 
   // Check if user has enough available credits
   const availableCredits = await getAvailableCredits(userId);
@@ -141,7 +141,7 @@ export async function getCreditTransactions(
   userId: string,
   limit: number = 50
 ): Promise<CreditTransaction[]> {
-  const supabase = getSupabaseClient();
+  const supabase = getSupabaseAdmin();
 
   const { data, error } = await supabase
     .from('credit_transactions')
@@ -166,7 +166,7 @@ export async function expireOldCredits(): Promise<{
   expiredCount: number;
   creditsExpired: number;
 }> {
-  const supabase = getSupabaseClient();
+  const supabase = getSupabaseAdmin();
 
   // Find credits that have expired but not marked as expired
   const { data: expiredCredits, error: selectError } = await supabase
@@ -239,7 +239,7 @@ export async function expireOldCredits(): Promise<{
 export async function getExpiringCredits(
   userId: string
 ): Promise<{ amount: number; expiresAt: string }[]> {
-  const supabase = getSupabaseClient();
+  const supabase = getSupabaseAdmin();
 
   const sevenDaysFromNow = new Date();
   sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);

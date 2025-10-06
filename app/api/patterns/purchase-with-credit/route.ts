@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
-import { getSupabaseClient } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 import { spendCredits, getAvailableCredits } from '@/lib/credits';
 import { checkRateLimit, RateLimitPresets } from '@/lib/rate-limit';
 
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const supabase = getSupabaseClient();
+    const supabase = getSupabaseAdmin();
 
     // Get pattern details
     const { data: pattern, error: patternError } = await supabase

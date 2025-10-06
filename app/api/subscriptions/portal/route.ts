@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { auth } from '@/auth';
-import { getSupabaseClient } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 import { checkRateLimit, RateLimitPresets } from '@/lib/rate-limit';
 
 export const dynamic = 'force-dynamic';
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
       return rateLimitResult;
     }
 
-    const supabase = getSupabaseClient();
+    const supabase = getSupabaseAdmin();
 
     // Get user's Stripe customer ID
     const { data: userData, error: userError } = await supabase
