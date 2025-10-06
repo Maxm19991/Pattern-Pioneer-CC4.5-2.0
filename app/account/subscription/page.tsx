@@ -133,7 +133,26 @@ function SubscriptionPageContent() {
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">Subscription</h1>
+        <div className="flex items-center gap-4 mb-8">
+          <button
+            onClick={() => router.back()}
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Back
+          </button>
+          <h1 className="text-3xl font-bold">Subscription</h1>
+        </div>
 
         {/* Success/Cancel Messages */}
         {success && (
@@ -279,7 +298,7 @@ function SubscriptionPageContent() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-6 items-start">
               {/* Monthly Plan */}
               <div className="border-2 rounded-lg p-6 hover:border-blue-500 transition">
                 <h3 className="text-xl font-bold mb-2">Monthly Plan</h3>
@@ -290,10 +309,6 @@ function SubscriptionPageContent() {
                   <li className="flex items-start">
                     <span className="text-green-600 mr-2">✓</span>
                     12 credits per month
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-600 mr-2">✓</span>
-                    7-day free trial
                   </li>
                   <li className="flex items-start">
                     <span className="text-green-600 mr-2">✓</span>
@@ -309,7 +324,7 @@ function SubscriptionPageContent() {
                   disabled={actionLoading}
                   className="w-full bg-black text-white px-6 py-3 rounded hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {actionLoading ? 'Loading...' : 'Start Free Trial'}
+                  {actionLoading ? 'Loading...' : 'Subscribe Now'}
                 </button>
               </div>
 
@@ -332,11 +347,11 @@ function SubscriptionPageContent() {
                   </li>
                   <li className="flex items-start">
                     <span className="text-green-600 mr-2">✓</span>
-                    7-day free trial
+                    50% discount vs monthly
                   </li>
                   <li className="flex items-start">
                     <span className="text-green-600 mr-2">✓</span>
-                    50% discount vs monthly
+                    Cancel anytime
                   </li>
                   <li className="flex items-start">
                     <span className="text-green-600 mr-2">✓</span>
@@ -348,7 +363,7 @@ function SubscriptionPageContent() {
                   disabled={actionLoading}
                   className="w-full bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {actionLoading ? 'Loading...' : 'Start Free Trial'}
+                  {actionLoading ? 'Loading...' : 'Subscribe Now'}
                 </button>
               </div>
             </div>

@@ -121,7 +121,6 @@ export async function POST(req: NextRequest) {
           userId: session.user.id,
           planType,
         },
-        trial_period_days: 7, // 7-day free trial
       },
       allow_promotion_codes: true, // Allow discount codes
     });

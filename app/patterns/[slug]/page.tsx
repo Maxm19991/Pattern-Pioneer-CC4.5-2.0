@@ -196,20 +196,6 @@ export default async function PatternPage({ params }: PatternPageProps) {
                   </svg>
                   Print-on-demand permitted
                 </li>
-                <li className="flex items-start">
-                  <svg
-                    className="w-5 h-5 text-red-500 mr-2 mt-0.5"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path d="M6 18L18 6M6 6l12 12"></path>
-                  </svg>
-                  Cannot resell as digital asset
-                </li>
               </ul>
             </div>
           </div>
