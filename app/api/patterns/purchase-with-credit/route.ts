@@ -95,6 +95,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Spend 1 credit
+    console.log('Attempting to spend credit for user:', session.user.id, 'pattern:', patternId);
     const result = await spendCredits(
       session.user.id,
       1,
@@ -102,7 +103,10 @@ export async function POST(req: NextRequest) {
       `Purchased "${pattern.name}" with 1 credit`
     );
 
+    console.log('Spend credits result:', result);
+
     if (!result.success) {
+      console.error('Failed to spend credits:', result.error);
       return NextResponse.json(
         { error: result.error || 'Failed to spend credit' },
         { status: 500 }
